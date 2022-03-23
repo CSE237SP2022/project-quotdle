@@ -13,8 +13,40 @@ public class Wordle {
 		this.Guesses = new LetterState[numberOfGuesses][answer.length()];
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+//	public static void main(String[] args) {
+//		// TODO Auto-generated method stub
+//	}
+	
+	public String getAnswer() {
+		return this.answer;
+	}
+	
+	public int getNumberOfGuesses() {
+		return this.numberOfGuesses;
+	}
+	
+	public LetterState[][] getGuesses() {
+		return this.Guesses;
+	}
+	
+	public int getCurrentGuessNumber() {
+		return this.currentGuessNumber;
+	}
+	
+	public boolean submitGuess(LetterState[] guess) {
+		if(this.processGuess(guess)) {
+			this.Guesses[currentGuessNumber] = guess;
+			this.currentGuessNumber++;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean processGuess(LetterState[] guess) {
+		//Daniel's method here
+		return true;
 	}
 
 }
