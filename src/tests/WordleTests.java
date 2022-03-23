@@ -11,7 +11,7 @@ import quotdle.Wordle;
 
 class WordleTests {
 	
-	String[] answersToTestWith = {"hello", "power", "smoke", "loose", "table", "chair", "hairy", "bowls", "taxed", "boast", "bound", "fluff", "gassy", "ameer", "nacre", "omega", "pirai", "large", "letch", "adore", "whame", "skimp", "anode", "irade", "blent", "blunt", "scant"};
+	String[] answersToTestWith = {"hello", "power", "smoke", "loose", "timid", "table", "chair", "rager", "hairy", "bowls", "taxed", "boast", "bound", "fluff", "puffs", "gassy", "ameer", "nacre", "omega", "pirai", "large", "letch", "adore", "whame", "skimp", "anode", "irade", "blent", "blunt", "scant"};
 	int numberOfGuesses = 5;	
 	
 	Wordle currentWordle;
@@ -96,6 +96,43 @@ class WordleTests {
 //			assertTrue(currentGuesses.equals(currentWordle.getGuesses()));
 //
 //		}
+	}
+
+	@Test
+	void processGuessTest() {
+		
+		LetterState[] guess = new LetterState[currentAnswer.length()];
+		guess[0] = new LetterState('h');
+		guess[1] = new LetterState('o');
+		guess[2] = new LetterState('r');
+		guess[3] = new LetterState('s');
+		guess[4] = new LetterState('e');
+		
+		assertTrue(currentWordle.processGuess(guess));
+		
+		guess[0] = new LetterState('a');
+		guess[1] = new LetterState('r');
+		guess[2] = new LetterState('r');
+		guess[3] = new LetterState('a');
+		guess[4] = new LetterState('y');
+		
+		assertTrue(currentWordle.processGuess(guess));
+		
+		guess[0] = new LetterState('i');
+		guess[1] = new LetterState('c');
+		guess[2] = new LetterState('i');
+		guess[3] = new LetterState('n');
+		guess[4] = new LetterState('g');
+		
+		assertTrue(currentWordle.processGuess(guess));
+
+		guess[0] = new LetterState('f');
+		guess[1] = new LetterState('l');
+		guess[2] = new LetterState('u');
+		guess[3] = new LetterState('f');
+		guess[4] = new LetterState('f');
+		
+		assertTrue(currentWordle.processGuess(guess));
 	}
 
 }
