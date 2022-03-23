@@ -18,9 +18,18 @@ public class LetterState {
 		state = States.blank;
 	}
 	
-	public LetterState(char letter) {
-		letter = letter;
+	public LetterState(char newLetter) {
+		letter = newLetter;
 		state = States.blank;
+	}
+	
+	//delete this method when done with stupid printing debugging strategy (Daniel)
+	public char getLetter() {
+		return letter;
+	}
+	//delete this method when done with stupid printing debugging strategy (Daniel)
+	public States getState() {
+		return state;
 	}
 
 	public static void main(String[] args) {
