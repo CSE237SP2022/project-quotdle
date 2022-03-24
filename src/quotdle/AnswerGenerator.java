@@ -1,5 +1,7 @@
 package quotdle;
 
+import java.util.Random;
+
 public class AnswerGenerator {
 	
 	private static String[] possibleWordleAnswers;
@@ -10,6 +12,8 @@ public class AnswerGenerator {
 	
 	
 	public static String generateNewWordle() {
+		int randomIndex = new Random().nextInt(possibleWordleAnswers.length);
+		return possibleWordleAnswers[randomIndex];
 	}
 	
 
