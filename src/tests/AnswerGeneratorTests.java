@@ -1,5 +1,5 @@
 package tests;
-
+import quotdle.AnswerGenerator;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
@@ -27,8 +27,5 @@ class AnswerGeneratorTests {
 			boolean contains = Arrays.stream(possibleWordleAnswers).anyMatch(wordleAnswer::equals);
 			assertTrue(contains);
 		}
-	}
-	@Test 
-	public void testTest() {
 	}
 }
