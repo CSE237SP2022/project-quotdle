@@ -9,7 +9,7 @@ class GameTests {
 	
 	@Test
 	void testInvalidGuesses() {
-		String[] guesses = {"salads", "explosions", "torandos", "", "ex", "t"};
+		String[] guesses = {"salads", "explosions", "torandos", "", "ex"};
 		Game currGame = new Game();
 		
 		for (String guess: guesses) {
@@ -20,13 +20,18 @@ class GameTests {
 	
 	@Test
 	void testValidGuesses() {
-		String[] guesses = {"afoul", "owner", "truly", "twice", "zowie", "false"};
+		String[] guesses = {"afoul", "owner", "truly", "twice", "zowie"};
 		Game currGame = new Game();
 		
 		for (String guess: guesses) {
 			assertTrue(currGame.submitGuess(guess));
 		}
 		
+//		assumes guess limit is 5
+		String extraGuess = "abuse";
+		assertFalse(currGame.submitGuess(extraGuess));	
 	}
+	
+
 
 }
