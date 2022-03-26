@@ -16,6 +16,10 @@ public class AnswerGenerator {
 		return possibleWordleAnswers.get(randomIndex);
 	}
 	
+	public static List<String> getWordleList() {
+		return possibleWordleAnswers;
+	}
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
