@@ -1,5 +1,4 @@
 package quotdle;
-import javax.swing.text.html.FormSubmitEvent;
 
 import util.ArgsProcessor;
 
@@ -39,10 +38,13 @@ public class Game {
 		// TODO Auto-generated method stub
 		
 		ArgsProcessor ap = new ArgsProcessor(args);
+		Game currGame = new Game();
+		
 		String guess = ap.nextString("Provide a guess");
 		
-		Game currGame = new Game();
-		currGame.submitGuess(guess);
+		while(!currGame.submitGuess(guess)) {
+			guess = ap.nextString("Provide a guess");
+		}
 
 	}
 
