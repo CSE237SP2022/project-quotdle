@@ -101,6 +101,9 @@ class WordleTests {
 	@Test
 	void processGuessTest() {
 		
+		//array does not correctly assign states - first a should be misplaced, second should be wrong
+		//currentAnswer = "scant";
+		
 		LetterState[] guess = new LetterState[currentAnswer.length()];
 		guess[0] = new LetterState('h');
 		guess[1] = new LetterState('o');

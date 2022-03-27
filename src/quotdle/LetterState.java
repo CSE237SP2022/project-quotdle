@@ -23,13 +23,9 @@ public class LetterState {
 		state = States.blank;
 	}
 	
-	//delete this method when done with stupid printing debugging strategy (Daniel)
-	public char getLetter() {
-		return letter;
-	}
-	//delete this method when done with stupid printing debugging strategy (Daniel)
-	public States getState() {
-		return state;
+	public LetterState(char newLetter, States newState) {
+		letter = newLetter;
+		state = newState;
 	}
 
 	public static void main(String[] args) {
