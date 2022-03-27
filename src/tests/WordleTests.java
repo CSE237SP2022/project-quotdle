@@ -11,7 +11,7 @@ import quotdle.Wordle;
 
 class WordleTests {
 	
-	String[] answersToTestWith = {"hello", "power", "smoke", "loose", "timid", "table", "chair", "rager", "hairy", "bowls", "taxed", "boast", "bound", "fluff", "puffs", "gassy", "ameer", "nacre", "omega", "pirai", "large", "letch", "adore", "whame", "skimp", "anode", "irade", "blent", "blunt", "scant"};
+	String[] answersToTestWith = {"hello", "power", "smoke", "loose", "timid", "table", "chair", "frier", "rager", "hairy", "bowls", "taxed", "boast", "bound", "fluff", "puffs", "gassy", "ameer", "nacre", "omega", "pirai", "large", "letch", "adore", "whame", "skimp", "anode", "irade", "blent", "blunt", "scant"};
 	int numberOfGuesses = 5;	
 	
 	Wordle currentWordle;
@@ -100,9 +100,6 @@ class WordleTests {
 
 	@Test
 	void processGuessTest() {
-		
-		//array does not correctly assign states - first a should be misplaced, second should be wrong
-		//currentAnswer = "scant";
 		
 		LetterState[] guess = new LetterState[currentAnswer.length()];
 		guess[0] = new LetterState('h');

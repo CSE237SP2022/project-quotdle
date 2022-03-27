@@ -56,16 +56,6 @@ public class Wordle {
 		//g is index in guess
 		for(int g = 0; g < guess.length; g++) {
 			
-			
-			//check if the guess is evaluated correctly
-			System.out.println(answer);
-			for(int i = 0; i < guess.length; i++) {
-				System.out.print(guess[i].letter + " " + g + ": ");
-				System.out.println(guess[i].state);
-			}
-			System.out.println();
-			
-			
 			//we don't want to reevaluate letters (duplicates may be evaluated before they're reached)
 			if(guess[g].state == States.blank) {
 				
@@ -156,11 +146,11 @@ public class Wordle {
 		
 		//how many times does this letter, which is a duplicate in guess, appear in answer?
 		int countOfThisLetterInAnswer = getCountDuplicatesInAnswer(guess[duplicateLetterIndex]);
-		System.out.println("duplicate: " + guess[duplicateLetterIndex].letter + ", " + countOfThisLetterInAnswer);
 
 		//first, assign correct to all duplicates in the right place
 		if(countOfThisLetterInAnswer > 0) {	//if there are any of this duplicate letter in answer...
-			assignDuplicateCorrect(guess, guess[duplicateLetterIndex], countOfThisLetterInAnswer);
+			//assignDuplicateCorrect returns the assignDuplicateCorrect *excluding* those that are correct
+			countOfThisLetterInAnswer = assignDuplicateCorrect(guess, guess[duplicateLetterIndex], countOfThisLetterInAnswer);
 			
 		}	//end if(countOfThisLetterInAnswer > 0).
 		//If countOfThisLetterInAnswer was 0, we don't need to check where guess at index g is correct. Instead, below
@@ -183,17 +173,16 @@ public class Wordle {
 		return count;
 	}
 	
-	private LetterState[] assignDuplicateCorrect(LetterState[] guess, LetterState guessLetter, 
+	private int assignDuplicateCorrect(LetterState[] guess, LetterState guessLetter, 
 			int countOfThisLetterInAnswer) {
 		
 		//assign correct to all duplicates in the right place
 		for (int dupg = 0; dupg < guess.length; dupg++) {
-			
+
 			//is this one of the duplicates and has it not yet been assigned a state (state is blank when not yet assigned)?
 			//don't want to reevaluate letters that have already been assigned a state
 			if(guess[dupg].letter == guessLetter.letter && guess[dupg].state == States.blank) {
 				
-				System.out.println("in correct?");
 				//NOTE TO FUTURE SELF: THE PROBLEMS ARE 1. THIS METHOD DOESN'T WORK AND 2. assignDuplicateStates SHOULD
 				//ASSIGN STATES FOR ALL OF THAT DUPLICATE LETTER, SEEMS TO BE DOING ONLY ONE RN
 				
@@ -207,11 +196,12 @@ public class Wordle {
 				}
 			}
 		}
-		return guess;
+		
+		return countOfThisLetterInAnswer;
 		
 	}
 	
-	private LetterState[] assignDuplicateMisplacedWrong(LetterState[] guess, LetterState guessLetter, 
+	private void assignDuplicateMisplacedWrong(LetterState[] guess, LetterState guessLetter, 
 			int countOfThisLetterInAnswer) {
 		
 		//assign misplaced to remaining duplicates, until duplicates in answer have been exhausted. then, assign wrong.
@@ -220,22 +210,31 @@ public class Wordle {
 			//is this one of the duplicates and has it not yet been assigned a state?
 			//don't want to reevaluate letters that have already been assigned a state
 			if(guess[dupg].letter == guessLetter.letter && guess[dupg].state == States.blank) {
-				
+
 				//if there are more of the duplicate letter in answer, then for each of that letter in guess that is 
 				//not correct (we filtered for this by assigning correct to the correct ones, so remaining should 
 				//be blank still), assign misplaced. once there are no more of the duplicate letter in answer, assign wrong to the rest.
-				if(countOfThisLetterInAnswer > 0) {
-					assignLetterStateUpdateKeyboard(guessLetter, States.misplaced);
+				if(countOfThisLetterInAnswer > 0 && isMisplaced(guess, dupg)) {
+					assignLetterStateUpdateKeyboard(guess[dupg], States.misplaced);
 					countOfThisLetterInAnswer--;
 				}
-				//if there are no more of this letter in answer, the remaining duplicates in guess are wrong
-				else {
-					assignLetterStateUpdateKeyboard(guessLetter, States.wrong);
-				}
-				
 			}
 		}
-		return guess;
+		
+		//the remaining duplicates in guess are wrong (remaining if have not been assigned a state yet, meaning
+		//there are no more of that letter in answer)
+		assignDuplicateWrong(guess, guessLetter);
+	}
+	
+	private void assignDuplicateWrong(LetterState[] guess, LetterState guessLetter) {
+		for (int dupg = 0; dupg < guess.length; dupg++) {
+			
+			//is this one of the duplicates and has it not yet been assigned a state?
+			//remaining duplicates that have blank state are wrong
+			if(guess[dupg].letter == guessLetter.letter && guess[dupg].state == States.blank) {
+				assignLetterStateUpdateKeyboard(guess[dupg], States.wrong);
+			}
+		}
 	}
 	
 	
