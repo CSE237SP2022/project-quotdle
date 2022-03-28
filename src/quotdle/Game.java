@@ -1,4 +1,5 @@
 package quotdle;
+import util.ArgsProcessor;
 
 public class Game {
 
@@ -8,6 +9,11 @@ public class Game {
 	public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
 	public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
 
+	private Wordle currentWordleGame; 
+	
+	public Game() {
+		currentWordleGame = new Wordle(AnswerGenerator.generateNewWordle(), 5);
+	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
