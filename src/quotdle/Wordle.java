@@ -9,6 +9,7 @@ import java.util.HashSet;
 public class Wordle {
 	private int numberOfGuesses;
 	private String answer;
+	boolean gameWon;
 	int currentGuessNumber;
 	LetterState[][] Guesses;
 	LetterState[] keyboard;
@@ -16,6 +17,7 @@ public class Wordle {
 	public Wordle(String answer, int numberOfGuesses){
 		this.answer = answer.toLowerCase();
 		this.numberOfGuesses = numberOfGuesses;
+		this.gameWon = false;
 		this.currentGuessNumber = 0;
 		this.Guesses = new LetterState[numberOfGuesses][answer.length()];
 		this.keyboard = setUpKeyboard();
@@ -49,12 +51,13 @@ public class Wordle {
 		this.Guesses[currentGuessNumber] = guess;
 		this.currentGuessNumber++;
 		
-		return this.processGuess(guess);
+		this.processGuess(guess);
+		return gameWon;
 	}
 
 	//assigns states to guess based on this Wordle's answer
 	//IMPORTANT NOTE: guesses must be sent with all LetterStates having state = States.blank
-	public boolean processGuess(LetterState[] guess) {
+	public void processGuess(LetterState[] guess) {
 		
 		//g is index in guess
 		for(int g = 0; g < guess.length; g++) {
@@ -74,9 +77,8 @@ public class Wordle {
 		}
 		//return true if the guess is correct (indicates that the game is over)
 		if(correctGuess(guess)) {
-			return true;
+			gameWon = true;
 		}
-		return false;
 
 	}
 	
