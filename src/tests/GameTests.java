@@ -57,4 +57,10 @@ public class GameTests {
 		assertEquals(guessExpected, guessActual);
 	}
 	
+	@Test
+	void stringifyWordleTest() {
+		Game wordle = new Game();
+	}
+	
+	
 }

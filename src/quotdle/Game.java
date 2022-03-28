@@ -11,14 +11,35 @@ public class Game {
 	public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
 
 	private Wordle currentWordleGame; 
+	private LetterState[] currentGuess;
 	
 	public Game() {
-		currentWordleGame = new Wordle(AnswerGenerator.generateNewWordle(), 5);
+		int length = 5;
+		int guesses = 6;
+		currentWordleGame = new Wordle(AnswerGenerator.generateNewWordle(), guesses);
+		currentGuess = new LetterState[length];
 	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String[] stringifyWordle() {
+		String[] wordleOutput = new String[currentWordleGame.Guesses.length];
+		int length = currentWordleGame.Guesses.length;
+		
+		for (int i = 0; i < length; i++) {
+			if (i < currentWordleGame.currentGuessNumber) {
+				wordleOutput[i] = stringifyGuess(currentWordleGame.Guesses[i]);
+//			} else if (i == currentWordleGame.currentGuessNumber) {
+//				wordleOutput[i] = stringifyGuess(currentGuess);
+			} else {
+				wordleOutput[i] = stringifyGuess(generateBlank(length));
+			}
+		}
+		
+		return wordleOutput;
 	}
 	
 	public static String stringifyGuess(LetterState[] guess) {
@@ -41,6 +62,17 @@ public class Game {
 		default:
 			return letter.letter + ANSI_RESET;
 		}
+	}
+	
+	public static LetterState[] generateBlank(int length) {
+		LetterState[] blank = new LetterState[length];
+		
+		for (int i = 0; i < length; i++) {
+			blank[i] = new LetterState('░', States.blank);
+		}
+		
+		return blank;
+		
 	}
 	
 }
