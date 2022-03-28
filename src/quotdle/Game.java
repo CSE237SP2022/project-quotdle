@@ -1,4 +1,5 @@
 package quotdle;
+import quotdle.LetterState.States;
 import util.ArgsProcessor;
 
 public class Game {
@@ -17,26 +18,13 @@ public class Game {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
-	}
-	
-	// TODO make non static and remove parameter
-	public static String[] stringifyWordle(Wordle wordle) {
-		return null;
-//		String[] expectedOutput;
-//		for (LetterState[] guess : wordle.getGuesses()) {
-//			String guessString;
-//			for (LetterState letter : guess) {
-//				
-//			}
-//		}
-//		return expectedOutput;
+		
 	}
 	
 	public static String stringifyGuess(LetterState[] guess) {
 		String guessString = "";
 		for (int i = 0; i < guess.length; i++) {
-			guessString += colorChar(guess[i]);
+			guessString += colorLetter(guess[i]);
 			if (i < guess.length-1) {
 				guessString += " ";
 			}
@@ -44,18 +32,14 @@ public class Game {
 		return guessString;
 	}
 	
-	public static String colorChar(LetterState letter) {
-		switch (letter.getState()) {
+	public static String colorLetter(LetterState letter) {
+		switch (letter.state) {
 		case correct:
-			return ANSI_GREEN_BACKGROUND + letter.getLetter() + ANSI_RESET;
+			return ANSI_GREEN_BACKGROUND + letter.letter + ANSI_RESET;
 		case misplaced:
-			return ANSI_YELLOW_BACKGROUND + letter.getLetter() + ANSI_RESET;
-		case wrong:
-			return letter.getLetter() + ANSI_RESET;
-		case blank:
-			return letter.getLetter() + ANSI_RESET;	
+			return ANSI_YELLOW_BACKGROUND + letter.letter + ANSI_RESET;
 		default:
-			return "TODO ERROR";
+			return letter.letter + ANSI_RESET;
 		}
 	}
 	
