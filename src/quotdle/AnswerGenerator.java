@@ -16,6 +16,8 @@ public class AnswerGenerator {
 		return possibleWordleAnswers.get(randomIndex);
 	}
 	
+
+	
 	public static List<String> getWordleList() {
 		return possibleWordleAnswers;
 	}
