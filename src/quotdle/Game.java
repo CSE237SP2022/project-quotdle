@@ -1,5 +1,6 @@
 package quotdle;
 import quotdle.LetterState.States;
+import quotdle.Wordle.gameStatus;
 import util.ArgsProcessor;
 
 public class Game {
@@ -28,29 +29,6 @@ public class Game {
 
 	}
 	
-	public boolean submitGuess(String guess) {
-		
-		if (guess.length() != 5) return false;
-		if (!AnswerGenerator.getWordleList().contains(guess)) return false;
-		if (currentWordleGame.getCurrentGuessNumber() >=5) return false; 
-		
-		
-		LetterState[] guessAsLetterState = new LetterState[guess.length()];
-		char[] guessChars = guess.toCharArray();
-		
-		for (int i = 0; i < guessChars.length; i++) {
-			char guessChar = guessChars[i];
-			guessAsLetterState[i] = new LetterState(guessChar);
-		}
-		
-		currentWordleGame.submitGuess(guessAsLetterState);
-		
-		
-		return true;
-		
-		
-	}
-	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -62,8 +40,46 @@ public class Game {
 		while(!currGame.submitGuess(guess)) {
 			guess = ap.nextString("Provide a guess");
 		}
+		
+		switch (currGame.getGameStatus()) {
+			case won:
+				System.out.println("YOU WON");
+				break;
+			case ranOutOfGuesses:
+				System.out.println("Ran out of guesses : ( ");
+				break;
+			default:
+				System.out.println("Game still ongoing");
+				break;
+		}
+		
+		
 	}
 	
+	public gameStatus getGameStatus() {
+		return currentWordleGame.getCurrentGameStatus();
+	}
+	
+	public boolean submitGuess(String guess) {
+		
+		if (guess == null) return false;
+		if (guess.length() != 5) return false;
+		if (!AnswerGenerator.getWordleList().contains(guess)) return false;
+		
+		
+		LetterState[] guessAsLetterState = new LetterState[guess.length()];
+		char[] guessChars = guess.toCharArray();
+		
+		for (int i = 0; i < guessChars.length; i++) {
+			char guessChar = guessChars[i];
+			guessAsLetterState[i] = new LetterState(guessChar);
+		}		
+		
+		boolean isGameDone = currentWordleGame.submitGuess(guessAsLetterState);
+		return isGameDone;
+	}
+	
+
 	public String[] stringifyWordle() {
 		String[] wordleOutput = new String[currentWordleGame.Guesses.length];
 		int length = currentWordleGame.Guesses.length;
