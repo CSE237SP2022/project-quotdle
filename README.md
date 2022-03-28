@@ -21,6 +21,7 @@ The bulk of our work for the next iteration revolves around converting our Wordl
 
 
 ### Is there anything that you implemented but doesn't currently work?
+No, there is not.
 
 
 ### What commands are needed to compile and run your code from the command line (or better yet, provide a script that people can use to run your program!)
