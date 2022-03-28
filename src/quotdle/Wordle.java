@@ -7,9 +7,17 @@ import quotdle.LetterState.States;
 import java.util.HashSet;
 
 public class Wordle {
+	
+	public enum gameStatus {
+		won,
+		ranOutOfGuesses,
+		ongoing
+	}
+	
 	private int numberOfGuesses;
 	private String answer;
-	boolean gameWon;
+	gameStatus status;
+	boolean gameDone;
 	int currentGuessNumber;
 	LetterState[][] Guesses;
 	LetterState[] keyboard;
@@ -17,7 +25,8 @@ public class Wordle {
 	public Wordle(String answer, int numberOfGuesses){
 		this.answer = answer.toLowerCase();
 		this.numberOfGuesses = numberOfGuesses;
-		this.gameWon = false;
+		this.gameDone = false;
+		this.status = gameStatus.ongoing;
 		this.currentGuessNumber = 0;
 		this.Guesses = new LetterState[numberOfGuesses][answer.length()];
 		this.keyboard = setUpKeyboard();
@@ -47,12 +56,21 @@ public class Wordle {
 		return this.currentGuessNumber;
 	}
 	
+	public gameStatus getCurrentGameStatus() {
+		return this.status;
+	}
+	
 	public boolean submitGuess(LetterState[] guess) {
+		
+		if (status == gameStatus.ranOutOfGuesses) {
+			return gameDone;
+		}
+
+		this.processGuess(guess);
 		this.Guesses[currentGuessNumber] = guess;
 		this.currentGuessNumber++;
 		
-		this.processGuess(guess);
-		return gameWon;
+		return gameDone;
 	}
 
 	//assigns states to guess based on this Wordle's answer
@@ -75,10 +93,18 @@ public class Wordle {
 				}
 			}
 		}
-		//return true if the guess is correct (indicates that the game is over)
-		if(correctGuess(guess)) {
-			gameWon = true;
+		
+		if (this.currentGuessNumber >= this.numberOfGuesses-1) {
+			gameDone = true;
+			status = gameStatus.ranOutOfGuesses;
 		}
+		
+		//return true if the guess is correct (indicates that the game is over)
+		if (correctGuess(guess)) {
+			gameDone = true;
+			status = gameStatus.won;
+		}
+
 
 	}
 	
