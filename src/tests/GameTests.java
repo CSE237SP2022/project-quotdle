@@ -1,5 +1,4 @@
 package tests;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -55,6 +54,31 @@ public class GameTests {
 				+ ' ' + 'c' + ANSI_RESET;
 		
 		assertEquals(guessExpected, guessActual);
+	}
+  
+  @Test
+	void testInvalidGuesses() {
+		String[] guesses = {"salads", "explosions", "torandos", "", "ex"};
+		Game currGame = new Game();
+		
+		for (String guess: guesses) {
+			assertFalse(currGame.submitGuess(guess));
+		}
+		
+	}
+	
+	@Test
+	void testValidGuesses() {
+		String[] guesses = {"afoul", "owner", "truly", "twice", "zowie"};
+		Game currGame = new Game();
+		
+		for (String guess: guesses) {
+			assertTrue(currGame.submitGuess(guess));
+		}
+		
+//		assumes guess limit is 5
+		String extraGuess = "abuse";
+		assertFalse(currGame.submitGuess(extraGuess));	
 	}
 	
 	@Test
