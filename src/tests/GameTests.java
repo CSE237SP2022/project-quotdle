@@ -31,8 +31,8 @@ public class GameTests {
 		
 		String correctAExpected   = ANSI_GREEN_BACKGROUND + 'a' + ANSI_RESET;
 		String misplacedBExpected = ANSI_YELLOW_BACKGROUND + 'b' + ANSI_RESET;
-		String wrongCExpected     = 'c' + ANSI_RESET;
-		String blankDExpected     = 'd' + ANSI_RESET;
+		String wrongCExpected     = "c";
+		String blankDExpected     = "d";
 		
 		assertEquals(correctAExpected, correctAActual);
 		assertEquals(misplacedBExpected, misplacedBActual);
@@ -51,7 +51,7 @@ public class GameTests {
 		
 		String guessExpected = ANSI_GREEN_BACKGROUND + 'a' + ANSI_RESET 
 				+ ' ' + ANSI_YELLOW_BACKGROUND + 'b' + ANSI_RESET
-				+ ' ' + 'c' + ANSI_RESET;
+				+ ' ' + 'c';
 		
 		assertEquals(guessExpected, guessActual);
 	}
@@ -80,5 +80,42 @@ public class GameTests {
 		String extraGuess = "abuse";
 		assertFalse(currGame.submitGuess(extraGuess));	
 	}
+	
+	@Test
+	void stringifyWordleTest() {
+		Game wordle = new Game("after");
+		String[] guessBlank = wordle.stringifyWordle();
+		String[] expected = new String[6];
+		for (int i = 0; i < expected.length; i++) {
+			expected[i] = "░ ░ ░ ░ ░";
+		}
+
+		assertArrayEquals(expected, guessBlank);
+		
+		wordle.submitGuess("imply");
+		String[] guessVeryWrong = wordle.stringifyWordle();
+		expected[0] = "i m p l y";
+		assertArrayEquals(expected, guessVeryWrong);
+		
+		wordle.submitGuess("angry");
+		String[] guessWrong = wordle.stringifyWordle();
+		expected[1] = ANSI_GREEN_BACKGROUND + "a"  + ANSI_RESET
+				+ " " + "n" 
+				+ " " + "g" 
+				+ " " + ANSI_YELLOW_BACKGROUND + "r" + ANSI_RESET
+				+ " " + "y" ;
+		assertArrayEquals(expected, guessWrong);
+		
+		wordle.submitGuess("after");
+		String[] guessRight = wordle.stringifyWordle();
+		expected[2] = ANSI_GREEN_BACKGROUND + "a" + ANSI_RESET 
+				+ " " + ANSI_GREEN_BACKGROUND + "f" + ANSI_RESET 
+				+ " " + ANSI_GREEN_BACKGROUND + "t" + ANSI_RESET 
+				+ " " + ANSI_GREEN_BACKGROUND + "e" + ANSI_RESET 
+				+ " " + ANSI_GREEN_BACKGROUND + "r" + ANSI_RESET ;		
+		assertArrayEquals(expected, guessRight);
+		
+	}
+	
 	
 }

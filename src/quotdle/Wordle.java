@@ -1,6 +1,9 @@
 package quotdle;
 
 import java.util.Set;
+
+import quotdle.LetterState.States;
+
 import java.util.HashSet;
 
 public class Wordle {
@@ -28,6 +31,10 @@ public class Wordle {
 	
 	public int getNumberOfGuesses() {
 		return this.numberOfGuesses;
+	}
+	
+	public int getAnswerLength() {
+		return getAnswer().length();
 	}
 	
 	public LetterState[][] getGuesses() {
