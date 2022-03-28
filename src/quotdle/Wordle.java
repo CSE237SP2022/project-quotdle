@@ -39,14 +39,10 @@ public class Wordle {
 	}
 	
 	public boolean submitGuess(LetterState[] guess) {
-		if(this.processGuess(guess)) {
-			this.Guesses[currentGuessNumber] = guess;
-			this.currentGuessNumber++;
-			return true;
-		}
-		else {
-			return false;
-		}
+		this.Guesses[currentGuessNumber] = guess;
+		this.currentGuessNumber++;
+		
+		return this.processGuess(guess);
 	}
 
 	//assigns states to guess based on this Wordle's answer
@@ -69,8 +65,12 @@ public class Wordle {
 				}
 			}
 		}
+		//return true if the guess is correct (indicates that the game is over)
+		if(correctGuess(guess)) {
+			return true;
+		}
+		return false;
 
-		return true;
 	}
 	
 	//assigns state to given LetterState (at index letterIndex in guess) (for non-duplicate letters)
@@ -240,6 +240,16 @@ public class Wordle {
 			}
 			
 		}
+	}
+	
+	private boolean correctGuess(LetterState[] guess) {
+		boolean correct = true;
+		for(LetterState letter : guess) {
+			if(letter.state != States.correct) {
+				correct = false;
+			}
+		}
+		return correct;
 	}
 	
 	
