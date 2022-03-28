@@ -20,6 +20,14 @@ public class Game {
 		currentGuess = new LetterState[length];
 	}
 	
+	public Game(String word) {
+		int length = 5;
+		int guesses = 6;
+		currentWordleGame = new Wordle(word, guesses);
+		currentGuess = new LetterState[length];
+
+	}
+	
 	public boolean submitGuess(String guess) {
 		
 		if (guess.length() != 5) return false;
@@ -66,7 +74,7 @@ public class Game {
 //			} else if (i == currentWordleGame.currentGuessNumber) {
 //				wordleOutput[i] = stringifyGuess(currentGuess);
 			} else {
-				wordleOutput[i] = stringifyGuess(generateBlank(length));
+				wordleOutput[i] = stringifyGuess(generateBlank());
 			}
 		}
 		
@@ -91,14 +99,14 @@ public class Game {
 		case misplaced:
 			return ANSI_YELLOW_BACKGROUND + letter.letter + ANSI_RESET;
 		default:
-			return letter.letter + ANSI_RESET;
+			return Character.toString(letter.letter);
 		}
 	}
 	
-	public static LetterState[] generateBlank(int length) {
-		LetterState[] blank = new LetterState[length];
+	public LetterState[] generateBlank() {
+		LetterState[] blank = new LetterState[currentWordleGame.getAnswerLength()];
 		
-		for (int i = 0; i < length; i++) {
+		for (int i = 0; i < blank.length; i++) {
 			blank[i] = new LetterState('░', States.blank);
 		}
 		

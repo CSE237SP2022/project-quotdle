@@ -1,13 +1,13 @@
 package quotdle;
 
-enum States {
-	correct,
-	misplaced,
-	wrong,
-	blank
-}
-
 public class LetterState {
+	
+	public enum States {
+		correct,
+		misplaced,
+		wrong,
+		blank
+	}
 	
 	char letter;
 	
