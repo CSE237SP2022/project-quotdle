@@ -25,3 +25,4 @@ No, there is not.
 
 
 ### What commands are needed to compile and run your code from the command line (or better yet, provide a script that people can use to run your program!)
+To compile and run our code, use the build.sh bash script (./build.sh while in the root directory)
