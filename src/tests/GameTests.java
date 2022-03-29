@@ -114,7 +114,27 @@ public class GameTests {
 				+ " " + ANSI_GREEN_BACKGROUND + "e" + ANSI_RESET 
 				+ " " + ANSI_GREEN_BACKGROUND + "r" + ANSI_RESET ;		
 		assertArrayEquals(expected, guessRight);
+	}
+	
+	@Test
+	void colorKeyboardLetterTest() {
+		Game wordle = new Game("after");
+		char[] inputs = { 'a', 'b', 'c', 'x', 'y', 'z', ' ' , '\n' };
 		
+		String[] expected = { "a", "b", "c", "x", "y", "z", " ", "\n" };
+		String[] actual = new String[expected.length];
+		for (int i = 0; i < expected.length; i++) {
+			actual[i] = wordle.colorKeyboardLetter(inputs[i]);
+		}
+		assertArrayEquals(expected, actual);
+		
+		wordle.submitGuess("agree");
+		expected[0] = ANSI_GREEN_BACKGROUND + "a" + ANSI_RESET ;
+		
+		for (int i = 0; i < expected.length; i++) {
+			actual[i] = wordle.colorKeyboardLetter(inputs[i]);
+		}
+		assertArrayEquals(expected, actual);
 	}
 	
 	
