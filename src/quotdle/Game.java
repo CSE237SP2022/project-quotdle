@@ -1,5 +1,8 @@
 package quotdle;
+import java.util.LinkedList;
+
 import quotdle.LetterState.States;
+import quotdle.Wordle.gameStatus;
 import util.ArgsProcessor;
 
 public class Game {
@@ -28,29 +31,6 @@ public class Game {
 
 	}
 	
-	public boolean submitGuess(String guess) {
-		
-		if (guess.length() != 5) return false;
-		if (!AnswerGenerator.getWordleList().contains(guess)) return false;
-		if (currentWordleGame.getCurrentGuessNumber() >=5) return false; 
-		
-		
-		LetterState[] guessAsLetterState = new LetterState[guess.length()];
-		char[] guessChars = guess.toCharArray();
-		
-		for (int i = 0; i < guessChars.length; i++) {
-			char guessChar = guessChars[i];
-			guessAsLetterState[i] = new LetterState(guessChar);
-		}
-		
-		currentWordleGame.submitGuess(guessAsLetterState);
-		
-		
-		return true;
-		
-		
-	}
-	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -60,7 +40,61 @@ public class Game {
 		String guess = ap.nextString("Provide a guess");
 		
 		while(!currGame.submitGuess(guess)) {
+			currGame.printWordle();
+			currGame.printKeyboard();
 			guess = ap.nextString("Provide a guess");
+		}
+		currGame.printWordle();
+		currGame.printKeyboard();
+		
+//		while(currGame.getGameStatus() == gameStatus.ongoing) {
+//			String guess = ap.nextString("Provide a guess");
+//			
+//			currGame.printWordle();
+//			currGame.printKeyboard();
+//		}
+		
+		switch (currGame.getGameStatus()) {
+			case won:
+				System.out.println("YOU WON");
+				break;
+			case ranOutOfGuesses:
+				System.out.println("Ran out of guesses : ( ");
+				break;
+			default:
+				System.out.println("Game still ongoing");
+				break;
+		}
+		
+		
+	}
+	
+	public gameStatus getGameStatus() {
+		return currentWordleGame.getCurrentGameStatus();
+	}
+	
+	public boolean submitGuess(String guess) {
+		
+		if (guess == null) return false;
+		if (guess.length() != 5) return false;
+		if (!AnswerGenerator.getWordleList().contains(guess)) return false;
+		
+		
+		LetterState[] guessAsLetterState = new LetterState[guess.length()];
+		char[] guessChars = guess.toCharArray();
+		
+		for (int i = 0; i < guessChars.length; i++) {
+			char guessChar = guessChars[i];
+			guessAsLetterState[i] = new LetterState(guessChar);
+		}		
+		
+		boolean isGameDone = currentWordleGame.submitGuess(guessAsLetterState);
+		return isGameDone;
+	}
+	
+	public void printWordle() {
+		for (String line : stringifyWordle()) {
+			System.out.println(line);
 		}
 	}
 	
@@ -112,6 +146,27 @@ public class Game {
 		
 		return blank;
 		
+	}
+	
+	public void printKeyboard() {
+		String keyboard = "Q W E R T Y U I O P\n" + 
+						  " A S D F G H J K L\n" +
+						  "   Z X C V B N M\n\n";
+		
+		for (Character c : keyboard.toCharArray()) {
+			System.out.print(colorKeyboardLetter(c));
+		}
+		
+	}
+	
+	public String colorKeyboardLetter(char c) {
+		LetterState[] keyboard = currentWordleGame.keyboard;
+		for (int i = 0; i < keyboard.length; i++) {
+			if (Character.toLowerCase(c) == keyboard[i].letter) {
+				return colorLetter(keyboard[i]);
+			}
+		}
+		return Character.toString(c);
 	}
 	
 }

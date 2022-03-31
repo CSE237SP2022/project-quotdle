@@ -138,6 +138,7 @@ class WordleTests {
 		guess[3] = new LetterState('s');
 		guess[4] = new LetterState('e');
 
+
 		correctlyAssignedStatesGuess[0] = new LetterState('h');
 		correctlyAssignedStatesGuess[0].setState("wrong");
 		correctlyAssignedStatesGuess[1] = new LetterState('o');
@@ -189,7 +190,6 @@ class WordleTests {
 		Wordle testWordle = new Wordle("front", numberOfGuesses);
 		LetterState[] guess = new LetterState[currentAnswer.length()];
 		LetterState[] correctlyAssignedStatesGuess = new LetterState[currentAnswer.length()];
-		
 		
 		guess[0] = new LetterState('f');
 		guess[1] = new LetterState('l');
@@ -259,6 +259,7 @@ class WordleTests {
 		}
 		System.out.println();
 		return equal;
+
 	}
 
 }
