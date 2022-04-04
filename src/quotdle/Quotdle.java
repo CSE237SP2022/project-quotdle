@@ -16,6 +16,7 @@ public class Quotdle {
 	private String[] answer;
 	private int numberOfGuesses;
 	private Wordle[] wordles;
+	private int focusIndex;
 	
 	//The variables below here will be returned by calling the wordles, instead of storing here at quotdle
 //	boolean gameDone;
@@ -26,6 +27,7 @@ public class Quotdle {
 	LetterState[] keyboard;
 
 	public Quotdle(String[] answer, int numberOfGuesses){
+		this.focusIndex = 0;
 		this.answer = answer;
 		this.wordles = new Wordle[answer.length];
 		int totalAnswerLength = -1;
@@ -57,6 +59,20 @@ public class Quotdle {
 			length += answer[i].length() + 1;
 		}
 		return length;
+	}
+	
+	public void setFocusIndex(int newFocusIndex) {
+		if(newFocusIndex < 0) {
+			newFocusIndex = 0;
+		}
+		else if(newFocusIndex >= this.wordles.length) {
+			newFocusIndex = this.wordles.length -1;
+		}
+		this.focusIndex = newFocusIndex;
+	}
+	
+	public int getFocusIndex() {
+		return this.focusIndex;
 	}
 //	public static void main(String[] args) {
 //		// TODO Auto-generated method stub
