@@ -74,25 +74,31 @@ public class Quotdle {
 	public int getFocusIndex() {
 		return this.focusIndex;
 	}
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//	}
-//	
-//	public String getAnswer() {
-//		return this.answer;
-//	}
-//	
-//	public int getNumberOfGuesses() {
-//		return this.numberOfGuesses;
-//	}
-//	
-//	public int getAnswerLength() {
-//		return getAnswer().length();
-//	}
-//	
-//	public LetterState[][] getGuesses() {
-//		return this.Guesses;
-//	}
+	
+	public boolean submitGuess(LetterState[] guess) {
+		boolean toReturn = true;
+		for(int i = 0; i < this.wordles.length; ++i) {
+			if(i == this.focusIndex) {
+				toReturn = toReturn && this.wordles[i].submitGuess(guess);
+			}
+			else {
+				toReturn = toReturn && this.getAndResubmitOldGuess(i);
+			}
+		}
+		return toReturn;
+	}
+	
+	private boolean getAndResubmitOldGuess(int wordleIndex) {
+		LetterState[][] pastGuesses = this.wordles[wordleIndex].getGuesses();
+		int j = 1;
+		LetterState[] mostRecentGuess = pastGuesses[0];
+		while(!pastGuesses[j][0].isBlank()) {
+			mostRecentGuess = pastGuesses[j];
+			j = j + 1;
+		}
+		return this.wordles[wordleIndex].submitGuess(mostRecentGuess);
+	}
+
 //	
 //	public int getCurrentGuessNumber() {
 //		return this.currentGuessNumber;

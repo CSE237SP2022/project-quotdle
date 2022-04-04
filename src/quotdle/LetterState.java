@@ -28,6 +28,10 @@ public class LetterState {
 		state = newState;
 	}
 	
+	public boolean isBlank() {
+		return state == States.blank;
+	}
+	
 	//just for testing
 	public char getLetter() {
 		return letter;
