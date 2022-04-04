@@ -32,7 +32,7 @@ public class Quotdle {
 		this.wordles = new Wordle[answer.length];
 		int totalAnswerLength = -1;
 		for (int i = 0; i < answer.length; i++) {
-			wordles[i] = new Wordle(answer[i].toLowerCase());
+			wordles[i] = new Wordle(answer[i].toLowerCase(), numberOfGuesses);
 			totalAnswerLength += answer[i].length() + 1;
 		}
 		
