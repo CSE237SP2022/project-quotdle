@@ -16,7 +16,7 @@ class QuotdleTests {
 	int numberOfGuesses = 5;	
 	
 	int currentIndex;
-	String[] currentAnswer;
+	String currentAnswer;
 	int currentNumberOfGuesses;
 	int currentGuessNumber;
 	Quotdle currentQuotdle;
@@ -34,16 +34,17 @@ class QuotdleTests {
 		int numberOfGuesses =  5 + (int)Math.random()*10;
 		
 		currentQuotdle = new Quotdle(answer, numberOfGuesses);
-		currentAnswer = answer;
+		currentAnswer = "";
 		currentNumberOfGuesses = numberOfGuesses;
 		currentGuessNumber = 0;
 		
 		int totalAnswerLength = -1;
 		for (int i = 0; i < answer.length; i++) {
 			totalAnswerLength += answer[i].length() + 1;
+			currentAnswer = currentAnswer + answer[i] + " ";
 		}
+		currentAnswer = currentAnswer.substring(0, currentAnswer.length() - 1);
 		currentGuesses = new LetterState[numberOfGuesses][totalAnswerLength];
-		
 	}
 
 	@Test
@@ -52,6 +53,21 @@ class QuotdleTests {
 			String[] answer = answersToTestWith[(int)Math.floor(Math.random()*answersToTestWith.length)];
 			Quotdle newQuotdle = new Quotdle(answer, 5 + (int)Math.random()*10);
 		}
+	}
+	
+	@Test 
+	void getAnswerTest() {
+		assertTrue(currentAnswer.equals(currentQuotdle.getAnswer()));
+	}
+	
+	@Test 
+	void getNumberOfGuesses() {
+		assertEquals(currentNumberOfGuesses, currentQuotdle.getNumberOfGuesses(), 0.01);
+	}
+	
+	@Test
+	void getAnswerLengthTest() {
+		assertEquals(currentAnswer.length(), currentQuotdle.getAnswerLength(), 0.01);
 	}
 
 }
