@@ -21,6 +21,7 @@ class QuotdleTests {
 	int currentGuessNumber;
 	Quotdle currentQuotdle;
 	LetterState[][] currentGuesses;
+	int currentNumberOfWordles;
 	
 	
 	
@@ -37,6 +38,8 @@ class QuotdleTests {
 		currentAnswer = "";
 		currentNumberOfGuesses = numberOfGuesses;
 		currentGuessNumber = 0;
+		currentIndex = 0;
+		currentNumberOfWordles = answer.length;
 		
 		int totalAnswerLength = -1;
 		for (int i = 0; i < answer.length; i++) {
@@ -68,6 +71,16 @@ class QuotdleTests {
 	@Test
 	void getAnswerLengthTest() {
 		assertEquals(currentAnswer.length(), currentQuotdle.getAnswerLength(), 0.01);
+	}
+	
+	@Test
+	void getAndSetFocusIndexTests() {		
+		assertEquals(currentIndex, currentQuotdle.getFocusIndex(), 0.01);
+		for(int i = -2*currentNumberOfWordles; i < 2*currentNumberOfWordles; i++) {
+			currentQuotdle.setFocusIndex(i);
+			int correctIndex = Math.max(0, Math.min(i, currentNumberOfWordles - 1));
+			assertEquals(correctIndex, currentQuotdle.getFocusIndex(), 0.01);
+		}
 	}
 
 }
