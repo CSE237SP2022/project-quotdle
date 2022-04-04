@@ -13,7 +13,7 @@ public class Quotdle {
 //		ranOutOfGuesses,
 //		ongoing
 //	}
-
+	private String[] answer;
 	private int numberOfGuesses;
 	private Wordle[] wordles;
 	
@@ -26,6 +26,7 @@ public class Quotdle {
 	LetterState[] keyboard;
 
 	public Quotdle(String[] answer, int numberOfGuesses){
+		this.answer = answer;
 		this.wordles = new Wordle[answer.length];
 		int totalAnswerLength = -1;
 		for (int i = 0; i < answer.length; i++) {
@@ -41,6 +42,22 @@ public class Quotdle {
 		this.Guesses = new LetterState[numberOfGuesses][totalAnswerLength];
 	}
 	
+	public String getAnswer() {
+//		return this.answer;
+		return String.join(" ", this.answer);
+	}
+	
+	public int getNumberOfGuesses() {
+		return this.numberOfGuesses;
+	}
+	
+	public int getAnswerLength() {
+		int length = -1;
+		for(int i = 0; i < answer.length; i++) {
+			length += answer[i].length() + 1;
+		}
+		return length;
+	}
 //	public static void main(String[] args) {
 //		// TODO Auto-generated method stub
 //	}
