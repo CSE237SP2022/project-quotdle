@@ -31,6 +31,15 @@ public class Wordle {
 		this.Guesses = new LetterState[numberOfGuesses][answer.length()];
 		this.keyboard = setUpKeyboard();
 	}
+	public Wordle(String answer){
+		this.answer = answer.toLowerCase();
+		this.numberOfGuesses = 99999;
+		this.gameDone = false;
+		this.status = gameStatus.ongoing;
+		this.currentGuessNumber = 0;
+		this.Guesses = new LetterState[numberOfGuesses][answer.length()];
+		this.keyboard = setUpKeyboard();
+	}
 	
 //	public static void main(String[] args) {
 //		// TODO Auto-generated method stub
