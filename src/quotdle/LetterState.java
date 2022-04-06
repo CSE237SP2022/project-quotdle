@@ -2,6 +2,8 @@ package quotdle;
 
 public class LetterState {
 	
+	private String possibleLetters = "abcdefghijklmnopqrstuvwxyz";
+	
 	public enum States {
 		correct,
 		misplaced,
@@ -26,6 +28,20 @@ public class LetterState {
 	public LetterState(char newLetter, States newState) {
 		letter = newLetter;
 		state = newState;
+	}
+	
+	public LetterState(boolean useRandomChar) {
+		if(useRandomChar) {
+			letter = possibleLetters.charAt((int)Math.floor(Math.random()*possibleLetters.length()));
+		}
+		else {
+			letter = 'a';
+		}
+		state = States.blank;
+	}
+	
+	public boolean isBlank() {
+		return state == States.blank;
 	}
 	
 	//just for testing
@@ -62,6 +78,11 @@ public class LetterState {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public String toString() {
+		return Character.toString(this.letter);// + ": " + this.state;
 	}
 
 }

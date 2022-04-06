@@ -1,8 +1,9 @@
 package quotdle;
 import java.util.LinkedList;
+import quotdle.GameStatus.gameStatus;
+
 
 import quotdle.LetterState.States;
-import quotdle.Wordle.gameStatus;
 import util.ArgsProcessor;
 
 public class Game {

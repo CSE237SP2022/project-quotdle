@@ -9,10 +9,12 @@ import org.junit.jupiter.api.Test;
 import quotdle.LetterState;
 import quotdle.Quotdle;
 import quotdle.Wordle;
+import quotdle.GameStatus.gameStatus;
+import quotdle.GameStatus;
 
 class QuotdleTests {
 	
-	String[][] answersToTestWith = {{"well", "hello", "there"}, {"catch", "me", "outside"}};
+	String[][] answersToTestWith = {{"well", "hello", "there"}  };//, {"catch", "me", "outside"}};
 	int numberOfGuesses = 5;	
 	
 	int currentIndex;
@@ -82,5 +84,70 @@ class QuotdleTests {
 			assertEquals(correctIndex, currentQuotdle.getFocusIndex(), 0.01);
 		}
 	}
-
+	
+	@Test
+	void submitGuessAndGetStatusOngoingAndOutOfGuessesTest() {
+		for(int i = 0; i < answersToTestWith.length; ++i) {
+			String[] testAnswer = answersToTestWith[i];
+			Quotdle testQuotdle = new Quotdle(testAnswer, 2*testAnswer.length);
+			for(int j = 0; j < testAnswer.length; j++) {
+				testQuotdle.setFocusIndex(j);
+				LetterState[] badGuess1 = generateBadGuess(testAnswer[j].length());
+				LetterState[] badGuess2 = generateBadGuess(testAnswer[j].length());
+				while(badGuess1.equals(testAnswer[i])|| badGuess2.equals(testAnswer[i])) {
+					badGuess1 = generateBadGuess(testAnswer[j].length());
+					badGuess2 = generateBadGuess(testAnswer[j].length());
+				}
+				testQuotdle.submitGuess(badGuess1);
+				assertEquals(testQuotdle.getCurrentGameStatus(), gameStatus.ongoing);
+				testQuotdle.submitGuess(badGuess2);
+				if(j != testAnswer.length - 1) {
+					assertEquals(testQuotdle.getCurrentGameStatus(), gameStatus.ongoing);
+				}
+				else {
+					assertEquals(testQuotdle.getCurrentGameStatus(), gameStatus.ranOutOfGuesses);
+				}
+			}
+		}
+		
+	}
+	
+	@Test 
+	void submitGuessAndStatusWonTest(){
+		for(int i = 0; i < answersToTestWith.length; ++i) {
+			String[] testAnswer = answersToTestWith[i];
+			Quotdle testQuotdle = new Quotdle(testAnswer, 2*testAnswer.length);
+			for(int j = 0; j < testAnswer.length; j++) {
+				testQuotdle.setFocusIndex(j);
+				testQuotdle.submitGuess(generateGoodGuess(testAnswer[j]));
+				if(j != testAnswer.length - 1) {
+					assertEquals(testQuotdle.getCurrentGameStatus(), gameStatus.ongoing);
+				}
+				else {
+					assertEquals(testQuotdle.getCurrentGameStatus(), gameStatus.won);
+				}
+			}
+		}
+	}
+	
+	LetterState[] generateBadGuess(int guessLength) {
+		LetterState[] badGuess = new LetterState[guessLength];
+		for(int i = 0; i < guessLength; i++) {
+			badGuess[i] = new LetterState(true);
+		}
+		return badGuess;
+	}
+	LetterState[] generateGoodGuess(String answer) {
+		LetterState[] goodGuess = new LetterState[answer.length()];
+		for(int i = 0; i < answer.length(); i++) {
+			goodGuess[i] = new LetterState(answer.charAt(i));
+		}
+		return goodGuess;
+	}
 }
+
+
+
+
+
+
