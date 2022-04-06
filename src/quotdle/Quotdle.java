@@ -146,6 +146,10 @@ public class Quotdle {
 		return toReturn;
 	}
 	
+	public int getCurrentGuessNumber() {
+		return this.currentGuessNumber;
+	}
+	
 	public gameStatus getCurrentGameStatus() {
 		gameStatus[] statuses = new gameStatus[this.wordles.length];
 		for(int i = 0; i < wordles.length; ++i) {

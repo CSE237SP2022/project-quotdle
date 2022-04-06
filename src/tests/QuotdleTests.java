@@ -130,6 +130,27 @@ class QuotdleTests {
 		}
 	}
 	
+	@Test 
+	void getCurrentGuessNumberTest(){
+		for(int i = 0; i < answersToTestWith.length; ++i) {
+			String[] testAnswer = answersToTestWith[i];
+			Quotdle testQuotdle = new Quotdle(testAnswer, 2*testAnswer.length);
+			int testGuessNumber = 0;
+			
+			assertEquals(testGuessNumber, testQuotdle.getCurrentGuessNumber(), 0.01);
+			while(testQuotdle.getCurrentGuessNumber() < currentNumberOfGuesses) {
+
+				int randomIndex = (int)Math.floor(Math.random()*testAnswer.length);
+				testQuotdle.setFocusIndex(randomIndex);
+				
+				LetterState[] badGuess = generateBadGuess(testAnswer[randomIndex].length());
+				testQuotdle.submitGuess(badGuess);
+				
+				assertEquals(++testGuessNumber, testQuotdle.getCurrentGuessNumber(), 0.01);
+			}
+		}
+	}
+	
 	LetterState[] generateBadGuess(int guessLength) {
 		LetterState[] badGuess = new LetterState[guessLength];
 		for(int i = 0; i < guessLength; i++) {
