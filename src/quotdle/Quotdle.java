@@ -45,7 +45,6 @@ public class Quotdle {
 	}
 	
 	public String getAnswer() {
-//		return this.answer;
 		return String.join(" ", this.answer);
 	}
 	
@@ -59,6 +58,10 @@ public class Quotdle {
 			length += answer[i].length() + 1;
 		}
 		return length;
+	}
+	
+	public LetterState[][] getGuesses(){
+		return this.Guesses;
 	}
 	
 	public void setFocusIndex(int newFocusIndex) {
@@ -91,49 +94,38 @@ public class Quotdle {
 		this.updateGuesses(guess);
 		return toReturn;
 	}
-	
-	private void updateGuesses(LetterState[] guess) {
-//		System.out.print("new guess for index " + this.focusIndex + ": ");
-//		this.printLSArray(guess);
-		LetterState[] newGuess = new LetterState[this.Guesses[this.currentGuessNumber].length];
+	private LetterState[] cloneLastGuess() {
+		LetterState[] clonedGuess = new LetterState[this.Guesses[this.currentGuessNumber].length];
 		if(this.currentGuessNumber > 0) {
-			newGuess = this.Guesses[this.currentGuessNumber - 1].clone();
+			clonedGuess = this.Guesses[this.currentGuessNumber - 1].clone();
 		}
 		else {
-			for(int i = 0; i < newGuess.length; ++i) {
-				newGuess[i] = new LetterState(' ');
+			for(int i = 0; i < clonedGuess.length; ++i) {
+				clonedGuess[i] = new LetterState(' ');
 			}
 		}
+		return clonedGuess;
+	}
+	
+	private void updateGuesses(LetterState[] guess) {
+		LetterState[] newGuess = this.cloneLastGuess();
 		
 		int startOfUpdate = 0;
-		int j = 0;
-		while(j < focusIndex) {
+		for(int j = 0; j < focusIndex; j++) {
 			startOfUpdate += this.answer[j].length() + 1;
-			j++;
 		}
+		
 		for(int i = 0; i < guess.length; ++i) {
 			newGuess[startOfUpdate + i] = guess[i];
 		}
-		this.Guesses[this.currentGuessNumber] = newGuess;
-		this.currentGuessNumber++;
+		
+		this.Guesses[this.currentGuessNumber++] = newGuess;
+
 		System.out.println("__________________________");
 		System.out.println("Current this.guesses:");
 		this.printLSDoubleArray(Guesses);
 	}
 	
-	private void printLSArray(LetterState[] ls) {
-		String toPrint = "[";
-		for(int k = 0; k < ls.length; ++k) {
-			toPrint = toPrint + ls[k].toString() + ", ";
-		}
-		System.out.println(toPrint.substring(0, toPrint.length() - 2) + "]");
-	}
-	
-	private void printLSDoubleArray(LetterState[][] ls) {
-		for(int i = 0; i < ls.length; ++i) {
-			this.printLSArray(ls[i]);
-		}	
-	}
 	
 	private boolean getAndResubmitOldGuess(int wordleIndex) {
 		if(this.currentGuessNumber > 0) {
@@ -145,6 +137,7 @@ public class Quotdle {
 			return this.wordles[wordleIndex].submitGuess(generateBlankGuess(this.wordles[wordleIndex].getAnswerLength()));
 		}
 	}
+	
 	private LetterState[] generateBlankGuess(int guessLength) {
 		LetterState[] toReturn = new LetterState[guessLength];
 		for(int i = 0; i < guessLength; i++) {
@@ -182,6 +175,21 @@ public class Quotdle {
 			keyboard[c - 'a'] = new LetterState(c); 
 		}
 		return keyboard;
+	}
+	
+	private void printLSArray(LetterState[] ls) {
+		String toPrint = "[";
+		for(int k = 0; k < ls.length; ++k) {
+			toPrint = toPrint + ls[k].toString() + ", ";
+		}
+		System.out.println(toPrint.substring(0, toPrint.length() - 2) + "]");
+	}
+	
+	
+	private void printLSDoubleArray(LetterState[][] ls) {
+		for(int i = 0; i < ls.length; ++i) {
+			this.printLSArray(ls[i]);
+		}	
 	}
 
 }
