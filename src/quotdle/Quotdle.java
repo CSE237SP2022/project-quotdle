@@ -44,6 +44,17 @@ public class Quotdle {
 		}
 	}
 	
+	public LetterState[][] getWordleGuesses(int wordleNumber) {
+		if (wordleNumber < 0 || wordleNumber >= wordles.length) {
+			return null;
+		}
+		return wordles[wordleNumber].Guesses;
+	}
+	
+	public int getWordleCount() {
+		return wordles.length;
+	}
+	
 	public String getAnswer() {
 		return String.join(" ", this.answer);
 	}
