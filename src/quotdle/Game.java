@@ -49,8 +49,8 @@ public class Game {
 			currGame.printKeyboard();
 			input =  ap.nextString("Provide a guess. Press ',' to switch to the word on the leftand '.' to switch to the word on the right");
 		}
-		
-		currGame.printWordle();
+    
+		currGame.printQuotdle();
 		currGame.printKeyboard();
 		
 		switch (currGame.getGameStatus()) {
@@ -114,26 +114,36 @@ public class Game {
 		return submitGuess(input);
 		
 	}
-	
 
 	
-	public void printWordle() {
-		for (String line : stringifyWordle()) {
+	
+	public void printQuotdle() {
+		for (String line : stringifyQuotdle()) {
 			System.out.println(line);
 		}
 	}
 	
-	public String[] stringifyWordle() {
-		String[] wordleOutput = new String[currentQuotdleGame.Guesses.length];
-		int length = currentQuotdleGame.Guesses.length;
+	public String[] stringifyQuotdle() {
+		String[] quotdleOutput = stringifyWordle(currentQuotdleGame.getWordleGuesses(0), currentQuotdleGame.getCurrentGuessNumber());
+		for (int i = 1; i < currentQuotdleGame.getWordleCount(); i++) {
+			LetterState[][] guesses = currentQuotdleGame.getWordleGuesses(i);
+			String[] wordleOutput = stringifyWordle(guesses, currentQuotdleGame.getCurrentGuessNumber());
+			mergeWordleStrings(quotdleOutput, wordleOutput);
+		}
+		return quotdleOutput;
+	}
+	
+	public static String[] stringifyWordle(LetterState[][] guesses, int guessNumber) {
+		int length = guesses.length;
+		String[] wordleOutput = new String[length];
 		
 		for (int i = 0; i < length; i++) {
-			if (i < currentQuotdleGame.getCurrentGuessNumber()) {
-				wordleOutput[i] = stringifyGuess(currentQuotdleGame.Guesses[i]);
+			if (i < guessNumber) {
+				wordleOutput[i] = stringifyGuess(guesses[i]);
 //			} else if (i == currentWordleGame.currentGuessNumber) {
 //				wordleOutput[i] = stringifyGuess(currentGuess);
 			} else {
-				wordleOutput[i] = stringifyGuess(generateBlank());
+				wordleOutput[i] = stringifyGuess(generateBlank(guesses[i].length));
 			}
 		}
 		
@@ -162,8 +172,8 @@ public class Game {
 		}
 	}
 	
-	public LetterState[] generateBlank() {
-		LetterState[] blank = new LetterState[currentQuotdleGame.getAnswerLength()];
+	public static LetterState[] generateBlank(int length) {
+		LetterState[] blank = new LetterState[length];
 		
 		for (int i = 0; i < blank.length; i++) {
 			blank[i] = new LetterState('░', States.blank);
@@ -192,6 +202,23 @@ public class Game {
 			}
 		}
 		return Character.toString(c);
+	}
+	
+	public static LetterState[] stringToLetterState(String word) {
+		LetterState[] wordAsLetterState = new LetterState[word.length()];
+		char[] wordChars = word.toCharArray();
+		
+		for (int i = 0; i < wordChars.length; i++) {
+			char wordChar = wordChars[i];
+			wordAsLetterState[i] = new LetterState(wordChar);
+		}	
+		return wordAsLetterState;
+	}
+	
+	private static void mergeWordleStrings(String[] inA, String[] inB) {
+		for (int i = 0; i < inA.length; i++) {
+			inA[i] += "   " + inB[i];
+		}
 	}
 	
 }

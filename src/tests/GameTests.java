@@ -70,7 +70,7 @@ public class GameTests {
 	@Test
 	void testValidGuesses() {
 		String[] guesses = {"afoul", "owner", "truly", "twice", "zowie"};
-		Game currGame = new Game();
+		Game currGame = new Game(new String[]{"angry"});
 		
 		for (String guess: guesses) {
 			assertTrue(currGame.handleInput(guess));
@@ -97,22 +97,22 @@ public class GameTests {
 	
 	@Test
 	void stringifyWordleTest() {
-		Game wordle = new Game("after");
-		String[] guessBlank = wordle.stringifyWordle();
-		String[] expected = new String[6];
+		Game quotdle = new Game(new String[]{"after"});
+		String[] guessBlank = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 0);
+		String[] expected = new String[10];
 		for (int i = 0; i < expected.length; i++) {
 			expected[i] = "░ ░ ░ ░ ░";
 		}
 
 		assertArrayEquals(expected, guessBlank);
 		
-		wordle.submitGuess("imply");
-		String[] guessVeryWrong = wordle.stringifyWordle();
+		quotdle.submitGuess("imply");
+		String[] guessVeryWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 1);
 		expected[0] = "i m p l y";
 		assertArrayEquals(expected, guessVeryWrong);
 		
-		wordle.submitGuess("angry");
-		String[] guessWrong = wordle.stringifyWordle();
+		quotdle.submitGuess("angry");
+		String[] guessWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 2);
 		expected[1] = ANSI_GREEN_BACKGROUND + "a"  + ANSI_RESET
 				+ " " + "n" 
 				+ " " + "g" 
@@ -120,8 +120,8 @@ public class GameTests {
 				+ " " + "y" ;
 		assertArrayEquals(expected, guessWrong);
 		
-		wordle.submitGuess("after");
-		String[] guessRight = wordle.stringifyWordle();
+		quotdle.submitGuess("after");
+		String[] guessRight = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 3);
 		expected[2] = ANSI_GREEN_BACKGROUND + "a" + ANSI_RESET 
 				+ " " + ANSI_GREEN_BACKGROUND + "f" + ANSI_RESET 
 				+ " " + ANSI_GREEN_BACKGROUND + "t" + ANSI_RESET 
@@ -132,7 +132,7 @@ public class GameTests {
 	
 	@Test
 	void colorKeyboardLetterTest() {
-		Game wordle = new Game("after");
+		Game wordle = new Game(new String[]{"after"});
 		char[] inputs = { 'a', 'b', 'c', 'x', 'y', 'z', ' ' , '\n' };
 		
 		String[] expected = { "a", "b", "c", "x", "y", "z", " ", "\n" };
