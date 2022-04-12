@@ -45,7 +45,7 @@ public class Game {
 		String input = ap.nextString("Provide a guess. Press ',' to switch to the word on the leftand '.' to switch to the word on the right");
 		
 		while(!currGame.handleInput(input)) {
-			currGame.printWordle();
+			currGame.printQuotdle();
 			currGame.printKeyboard();
 			input =  ap.nextString("Provide a guess. Press ',' to switch to the word on the leftand '.' to switch to the word on the right");
 		}

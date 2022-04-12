@@ -106,12 +106,12 @@ public class GameTests {
 
 		assertArrayEquals(expected, guessBlank);
 		
-		quotdle.submitGuess("imply");
+		quotdle.handleInput("imply");
 		String[] guessVeryWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 1);
 		expected[0] = "i m p l y";
 		assertArrayEquals(expected, guessVeryWrong);
 		
-		quotdle.submitGuess("angry");
+		quotdle.handleInput("angry");
 		String[] guessWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 2);
 		expected[1] = ANSI_GREEN_BACKGROUND + "a"  + ANSI_RESET
 				+ " " + "n" 
@@ -120,7 +120,7 @@ public class GameTests {
 				+ " " + "y" ;
 		assertArrayEquals(expected, guessWrong);
 		
-		quotdle.submitGuess("after");
+		quotdle.handleInput("after");
 		String[] guessRight = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 3);
 		expected[2] = ANSI_GREEN_BACKGROUND + "a" + ANSI_RESET 
 				+ " " + ANSI_GREEN_BACKGROUND + "f" + ANSI_RESET 
@@ -142,7 +142,7 @@ public class GameTests {
 		}
 		assertArrayEquals(expected, actual);
 		
-		wordle.submitGuess("agree");
+		wordle.handleInput("agree");
 		expected[0] = ANSI_GREEN_BACKGROUND + "a" + ANSI_RESET ;
 		
 		for (int i = 0; i < expected.length; i++) {
