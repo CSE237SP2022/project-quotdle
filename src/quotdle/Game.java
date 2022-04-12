@@ -15,7 +15,7 @@ public class Game {
 	public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
 
 	private Quotdle currentQuotdleGame; 
-	private LetterState[] currentGuess;
+//	private LetterState[] currentGuess;
 	
 	public Game() {
 		
