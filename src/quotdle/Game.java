@@ -77,7 +77,7 @@ public class Game {
 	}
 	
 	public gameStatus getGameStatus() {
-		return currentWordleGame.getCurrentGameStatus();
+		return currentQuotdleGame.getCurrentGameStatus();
 	}
 	
 	public boolean submitGuess(String guess) {
@@ -95,7 +95,7 @@ public class Game {
 			guessAsLetterState[i] = new LetterState(guessChar);
 		}		
 		
-		boolean isGameDone = currentWordleGame.submitGuess(guessAsLetterState);
+		boolean isGameDone = currentQuotdleGame.submitGuess(guessAsLetterState);
 		return isGameDone;
 	}
 	
@@ -106,12 +106,12 @@ public class Game {
 	}
 	
 	public String[] stringifyWordle() {
-		String[] wordleOutput = new String[currentWordleGame.Guesses.length];
-		int length = currentWordleGame.Guesses.length;
+		String[] wordleOutput = new String[currentQuotdleGame.Guesses.length];
+		int length = currentQuotdleGame.Guesses.length;
 		
 		for (int i = 0; i < length; i++) {
-			if (i < currentWordleGame.currentGuessNumber) {
-				wordleOutput[i] = stringifyGuess(currentWordleGame.Guesses[i]);
+			if (i < currentQuotdleGame.getCurrentGuessNumber()) {
+				wordleOutput[i] = stringifyGuess(currentQuotdleGame.Guesses[i]);
 //			} else if (i == currentWordleGame.currentGuessNumber) {
 //				wordleOutput[i] = stringifyGuess(currentGuess);
 			} else {
@@ -145,7 +145,7 @@ public class Game {
 	}
 	
 	public LetterState[] generateBlank() {
-		LetterState[] blank = new LetterState[currentWordleGame.getAnswerLength()];
+		LetterState[] blank = new LetterState[currentQuotdleGame.getAnswerLength()];
 		
 		for (int i = 0; i < blank.length; i++) {
 			blank[i] = new LetterState('░', States.blank);
@@ -167,7 +167,7 @@ public class Game {
 	}
 	
 	public String colorKeyboardLetter(char c) {
-		LetterState[] keyboard = currentWordleGame.keyboard;
+		LetterState[] keyboard = currentQuotdleGame.keyboard;
 		for (int i = 0; i < keyboard.length; i++) {
 			if (Character.toLowerCase(c) == keyboard[i].letter) {
 				return colorLetter(keyboard[i]);
