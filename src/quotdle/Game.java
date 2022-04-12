@@ -14,28 +14,22 @@ public class Game {
 	public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
 	public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
 
-	public Quotdle currentQuotdleGame; 
-	private int focus;
-//	private LetterState[] currentGuess;
+	private Quotdle currentQuotdleGame; 
+	private LetterState[] currentGuess;
 	
 	public Game() {
 		
 		int guesses = 10;
 		String[] answer = {AnswerGenerator.generateNewWordle(), AnswerGenerator.generateNewWordle(), AnswerGenerator.generateNewWordle()};
 		currentQuotdleGame = new Quotdle(answer, guesses);
-		
-//		not sure if we need these variables below
-//		int length = 5;
-//		currentGuess = new LetterState[length];
+		currentGuess = new LetterState[currentQuotdleGame.getAnswerLength()];
 	}
 	
 	public Game(String[] words) {
 		
 		int guesses = 10;
 		currentQuotdleGame = new Quotdle(words, guesses);
-		
-//		int length = 5;
-//		currentGuess = new LetterState[length];
+		currentGuess = new LetterState[currentQuotdleGame.getAnswerLength()];
 
 	}
 	
