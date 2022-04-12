@@ -14,7 +14,7 @@ public class Game {
 	public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
 	public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
 
-	private Quotdle currentQuotdleGame; 
+	public Quotdle currentQuotdleGame; 
 	private LetterState[] currentGuess;
 	
 	public Game() {
@@ -33,28 +33,25 @@ public class Game {
 
 	}
 	
+
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
 		ArgsProcessor ap = new ArgsProcessor(args);
 		Game currGame = new Game();
 		
-		String guess = ap.nextString("Provide a guess");
+		String input = ap.nextString("Provide a guess. Press ',' to switch to the word on the leftand '.' to switch to the word on the right");
 		
-		while(!currGame.submitGuess(guess)) {
-			currGame.printQuotdle();
+		while(!currGame.handleInput(input)) {
+			currGame.printWordle();
 			currGame.printKeyboard();
-			guess = ap.nextString("Provide a guess");
+			input =  ap.nextString("Provide a guess. Press ',' to switch to the word on the leftand '.' to switch to the word on the right");
 		}
+    
 		currGame.printQuotdle();
 		currGame.printKeyboard();
-		
-//		while(currGame.getGameStatus() == gameStatus.ongoing) {
-//			String guess = ap.nextString("Provide a guess");
-//			
-//			currGame.printWordle();
-//			currGame.printKeyboard();
-//		}
 		
 		switch (currGame.getGameStatus()) {
 			case won:
@@ -75,7 +72,15 @@ public class Game {
 		return currentQuotdleGame.getCurrentGameStatus();
 	}
 	
-	public boolean submitGuess(String guess) {
+	private void incrementFocus() {
+		currentQuotdleGame.setFocusIndex(currentQuotdleGame.getFocusIndex()+1);
+	}
+	
+	private void decrementFocus() {
+		currentQuotdleGame.setFocusIndex(currentQuotdleGame.getFocusIndex()-1);
+	}
+	
+	private boolean submitGuess(String guess) {
 		
 		if (guess == null) return false;
 		if (guess.length() != 5) return false;
@@ -94,6 +99,22 @@ public class Game {
 		return isGameDone;
 	}
 	
+	public boolean handleInput(String input) {
+		
+		if (input.equals(".")) {
+			incrementFocus();
+			return false;
+		}
+		
+		if (input.equals(",")) {
+			 decrementFocus();
+			 return false;
+		}
+		
+		return submitGuess(input);
+		
+	}
+
 	
 	
 	public void printQuotdle() {
