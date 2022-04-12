@@ -56,13 +56,13 @@ public class GameTests {
 		assertEquals(guessExpected, guessActual);
 	}
   
-  @Test
+	@Test
 	void testInvalidGuesses() {
 		String[] guesses = {"salads", "explosions", "torandos", "", "ex"};
 		Game currGame = new Game();
 		
 		for (String guess: guesses) {
-			assertFalse(currGame.submitGuess(guess));
+			assertFalse(currGame.handleInput(guess));
 		}
 		
 	}
@@ -73,13 +73,27 @@ public class GameTests {
 		Game currGame = new Game();
 		
 		for (String guess: guesses) {
-			assertTrue(currGame.submitGuess(guess));
+			assertTrue(currGame.handleInput(guess));
 		}
 		
 //		assumes guess limit is 5
 		String extraGuess = "abuse";
-		assertFalse(currGame.submitGuess(extraGuess));	
+		assertFalse(currGame.handleInput(extraGuess));	
 	}
+	
+	@Test
+	void testChangingFocusRight() {
+		String[] inputs = {".", ".", ".", ".", "."};
+		String[] answer = {"owner", "truly", "afoul"};
+		Game currGame = new Game(answer);
+		
+		for (String input : inputs) {
+			currGame.handleInput(input);
+		}
+		
+		assertTrue(currGame.currentQuotdleGame.getFocusIndex() == 2);
+	}
+	
 	
 	@Test
 	void stringifyWordleTest() {
