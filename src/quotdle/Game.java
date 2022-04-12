@@ -33,28 +33,36 @@ public class Game {
 
 	}
 	
+	public void incrementFocus() {
+		currentQuotdleGame.setFocusIndex(currentQuotdleGame.getFocusIndex()+1);
+	}
+	
+	public void decrementFocus() {
+		currentQuotdleGame.setFocusIndex(currentQuotdleGame.getFocusIndex()-1);
+	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
 		ArgsProcessor ap = new ArgsProcessor(args);
 		Game currGame = new Game();
 		
-		String guess = ap.nextString("Provide a guess");
+		String guess = ap.nextString("Provide a guess. Press ',' to switch to the word on the leftand '.' to switch to the word on the right");
+		
+		if (guess == ".") currGame.incrementFocus();
+		if (guess == ",") currGame.decrementFocus();
 		
 		while(!currGame.submitGuess(guess)) {
 			currGame.printWordle();
 			currGame.printKeyboard();
-			guess = ap.nextString("Provide a guess");
+			guess =  ap.nextString("Provide a guess. Press ',' to switch to the word on the leftand '.' to switch to the word on the right");
+			
+			if (guess == ".") currGame.incrementFocus();
+			if (guess == ",") currGame.decrementFocus();
 		}
 		currGame.printWordle();
 		currGame.printKeyboard();
-		
-//		while(currGame.getGameStatus() == gameStatus.ongoing) {
-//			String guess = ap.nextString("Provide a guess");
-//			
-//			currGame.printWordle();
-//			currGame.printKeyboard();
-//		}
 		
 		switch (currGame.getGameStatus()) {
 			case won:
