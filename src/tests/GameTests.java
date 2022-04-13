@@ -68,12 +68,10 @@ public class GameTests {
 	}
 	
 	@Test
-	void testValidGuesses() {
-		
+	void testValidGuesses() {		
 //		does not change to next word after getting one right
 		String[] guesses = {"owner", "truly", "twice", "barge", "bards"};
-		String[] answer = {"owner", "truly", "afoul"};
-		Game currGame = new Game(answer);
+		Game currGame = new Game(new String[]{"angry"});
 		
 		for (String guess: guesses) {
 			assertFalse(currGame.handleInput(guess));
@@ -140,7 +138,7 @@ public class GameTests {
 	@Test
 	void stringifyWordleTest() {
 		Game quotdle = new Game(new String[]{"after"});
-		String[] guessBlank = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 0);
+		String[] guessBlank = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 0, true);
 		String[] expected = new String[10];
 		for (int i = 0; i < expected.length; i++) {
 			expected[i] = "░ ░ ░ ░ ░";
@@ -149,12 +147,12 @@ public class GameTests {
 		assertArrayEquals(expected, guessBlank);
 		
 		quotdle.handleInput("imply");
-		String[] guessVeryWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 1);
+		String[] guessVeryWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 1, true);
 		expected[0] = "i m p l y";
 		assertArrayEquals(expected, guessVeryWrong);
 		
 		quotdle.handleInput("angry");
-		String[] guessWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 2);
+		String[] guessWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 2, true);
 		expected[1] = ANSI_GREEN_BACKGROUND + "a"  + ANSI_RESET
 				+ " " + "n" 
 				+ " " + "g" 
@@ -163,7 +161,7 @@ public class GameTests {
 		assertArrayEquals(expected, guessWrong);
 		
 		quotdle.handleInput("after");
-		String[] guessRight = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 3);
+		String[] guessRight = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 3, true);
 		expected[2] = ANSI_GREEN_BACKGROUND + "a" + ANSI_RESET 
 				+ " " + ANSI_GREEN_BACKGROUND + "f" + ANSI_RESET 
 				+ " " + ANSI_GREEN_BACKGROUND + "t" + ANSI_RESET 
