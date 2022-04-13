@@ -90,8 +90,13 @@ public class Quotdle {
 	}
 	
 	public boolean submitGuess(LetterState[] guess) {
+		if (currentGuessNumber >= this.numberOfGuesses) {
+			return false;
+		}
+		
 		boolean toReturn = true;
-		for(int i = 0; i < this.wordles.length; ++i) {
+		
+		for (int i = 0; i < this.wordles.length; ++i) {
 			if(i == this.focusIndex) {
 				toReturn = toReturn && this.wordles[i].submitGuess(guess);
 			}
@@ -105,6 +110,7 @@ public class Quotdle {
 		this.updateGuesses(guess);
 		return toReturn;
 	}
+	
 	private LetterState[] cloneLastGuess() {
 		LetterState[] clonedGuess = new LetterState[this.Guesses[this.currentGuessNumber].length];
 		if(this.currentGuessNumber > 0) {

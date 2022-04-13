@@ -69,14 +69,30 @@ public class GameTests {
 	
 	@Test
 	void testValidGuesses() {
-		String[] guesses = {"afoul", "owner", "truly", "twice", "zowie"};
-		Game currGame = new Game(new String[]{"angry"});
+		
+//		does not change to next word after getting one right
+		String[] guesses = {"owner", "truly", "twice", "barge", "bards"};
+		String[] answer = {"owner", "truly", "afoul"};
+		Game currGame = new Game(answer);
 		
 		for (String guess: guesses) {
-			assertTrue(currGame.handleInput(guess));
+			assertFalse(currGame.handleInput(guess));
 		}
 		
-//		assumes guess limit is 5
+		assertTrue(currGame.handleInput("afoul"));
+		
+	}
+	
+	@Test
+	void testTooManyGuesses() {
+		String[] guesses = {"afoul", "owner", "truly", "twice", "zowie", "zowie", "barge", "bards", "bigly", "abaft"};
+		String[] answer = {"owner", "truly", "afoul"};
+		Game currGame = new Game(answer);
+		
+		for (String input : guesses) {
+			currGame.handleInput(input);
+		}
+		
 		String extraGuess = "abuse";
 		assertFalse(currGame.handleInput(extraGuess));	
 	}
