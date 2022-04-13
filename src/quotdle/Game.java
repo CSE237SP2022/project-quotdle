@@ -42,12 +42,12 @@ public class Game {
 		ArgsProcessor ap = new ArgsProcessor(args);
 		Game currGame = new Game();
 		
-		String input = ap.nextString("Provide a guess. Press ',' to switch to the word on the leftand '.' to switch to the word on the right");
+		String input = "";
 		
 		while(!currGame.handleInput(input)) {
 			currGame.printQuotdle();
 			currGame.printKeyboard();
-			input =  ap.nextString("Provide a guess. Press ',' to switch to the word on the leftand '.' to switch to the word on the right");
+			input =  ap.nextString("Provide a guess. Press ',' to switch to the word on the left and '.' to switch to the word on the right");
 		}
     
 		currGame.printQuotdle();
@@ -103,11 +103,13 @@ public class Game {
 		
 		if (input.equals(".")) {
 			incrementFocus();
+			System.out.println("focus is now: " + currentQuotdleGame.getFocusIndex());
 			return false;
 		}
 		
 		if (input.equals(",")) {
 			 decrementFocus();
+			System.out.println("focus is now: " + currentQuotdleGame.getFocusIndex());
 			 return false;
 		}
 		
