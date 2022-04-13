@@ -97,15 +97,14 @@ public class Quotdle {
 		boolean toReturn = true;
 		
 		for (int i = 0; i < this.wordles.length; ++i) {
-			if(i == this.focusIndex) {
-				toReturn = toReturn && this.wordles[i].submitGuess(guess);
+			if (i == this.focusIndex) {
+				boolean hasCompletedGuess = this.wordles[i].submitGuess(guess);
+				toReturn = toReturn && hasCompletedGuess;
 			}
 			else {
 				toReturn = toReturn && this.getAndResubmitOldGuess(i);
 			}
 			LetterState[][] pastGuesses = this.wordles[i].getGuesses();
-			System.out.println("Guesses for wordle index: " + i);
-			this.printLSDoubleArray(pastGuesses);
 		}
 		this.updateGuesses(guess);
 		return toReturn;
@@ -137,10 +136,6 @@ public class Quotdle {
 		}
 		
 		this.Guesses[this.currentGuessNumber++] = newGuess;
-
-		System.out.println("__________________________");
-		System.out.println("Current this.guesses:");
-		this.printLSDoubleArray(Guesses);
 	}
 	
 	
