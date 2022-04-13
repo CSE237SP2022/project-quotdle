@@ -103,11 +103,13 @@ public class Game {
 		
 		if (input.equals(".")) {
 			incrementFocus();
+			System.out.println("focus is now: " + currentQuotdleGame.getFocusIndex());
 			return false;
 		}
 		
 		if (input.equals(",")) {
 			 decrementFocus();
+			System.out.println("focus is now: " + currentQuotdleGame.getFocusIndex());
 			 return false;
 		}
 		
