@@ -94,6 +94,32 @@ public class GameTests {
 		assertTrue(currGame.currentQuotdleGame.getFocusIndex() == 2);
 	}
 	
+	@Test
+	void testChangingFocusLeft() {
+		String[] inputs = {",", ",", ",", ",", ","};
+		String[] answer = {"owner", "truly", "afoul"};
+		Game currGame = new Game(answer);
+		
+		for (String input : inputs) {
+			currGame.handleInput(input);
+		}
+		
+		assertTrue(currGame.currentQuotdleGame.getFocusIndex() == 0);
+	}
+	
+	@Test
+	void testChangingLeftAndRight() {
+		String[] inputs = {".", ".", "truly", ",", "salad"};
+		String[] answer = {"owner", "truly", "afoul"};
+		Game currGame = new Game(answer);
+		
+		for (String input : inputs) {
+			currGame.handleInput(input);
+		}
+		
+		assertTrue(currGame.currentQuotdleGame.getFocusIndex() == 1);
+	}
+	
 	
 	@Test
 	void stringifyWordleTest() {
