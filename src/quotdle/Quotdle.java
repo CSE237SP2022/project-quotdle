@@ -95,10 +95,11 @@ public class Quotdle {
 		}
 		
 		boolean toReturn = true;
+		boolean hasCompletedGuess = false;
 		
 		for (int i = 0; i < this.wordles.length; ++i) {
 			if (i == this.focusIndex) {
-				boolean hasCompletedGuess = this.wordles[i].submitGuess(guess);
+				hasCompletedGuess = this.wordles[i].submitGuess(guess);
 				toReturn = toReturn && hasCompletedGuess;
 			}
 			else {
@@ -106,6 +107,12 @@ public class Quotdle {
 			}
 			LetterState[][] pastGuesses = this.wordles[i].getGuesses();
 		}
+		
+//		not a good fix -- if the user has finished the task on the right, then there's no point pushing them there
+//		need to change it to search for any ongoing wordles and go on
+		
+		if (hasCompletedGuess) setFocusIndex(this.focusIndex + 1);
+		
 		this.updateGuesses(guess);
 		return toReturn;
 	}

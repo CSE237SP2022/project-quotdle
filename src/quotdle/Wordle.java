@@ -58,7 +58,7 @@ public class Wordle {
 	}
 	
 	public boolean submitGuess(LetterState[] guess) {
-		System.out.print("Guess submitted for wordle with answer: " + this.answer + " ");
+//		System.out.print("Guess submitted for wordle with answer: " + this.answer + " ");
 		this.printLSArray(guess);
 		if (status == gameStatus.ranOutOfGuesses) {
 			return gameDone;
