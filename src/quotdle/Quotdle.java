@@ -55,6 +55,10 @@ public class Quotdle {
 		return wordles.length;
 	}
 	
+	public LetterState[] getKeyboard() {
+		return this.wordles[focusIndex].keyboard;
+	}
+	
 	public String getAnswer() {
 		return String.join(" ", this.answer);
 	}
