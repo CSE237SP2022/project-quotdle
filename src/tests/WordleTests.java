@@ -125,6 +125,34 @@ class WordleTests {
 
 		assertFalse(testWordle.submitGuess(guess));
 	}
+
+	@Test
+	void processGuessTestBlankGuess() {
+		Wordle testWordle = new Wordle("crane", numberOfGuesses);
+		LetterState[] guess = new LetterState[currentAnswer.length()];
+		LetterState[] correctlyAssignedStatesGuess = new LetterState[currentAnswer.length()];
+		
+		guess[0] = new LetterState(' ');
+		guess[1] = new LetterState(' ');
+		guess[2] = new LetterState(' ');
+		guess[3] = new LetterState(' ');
+		guess[4] = new LetterState(' ');
+
+		correctlyAssignedStatesGuess[0] = new LetterState(' ');
+		correctlyAssignedStatesGuess[0].setState("blank");
+		correctlyAssignedStatesGuess[1] = new LetterState(' ');
+		correctlyAssignedStatesGuess[1].setState("blank");
+		correctlyAssignedStatesGuess[2] = new LetterState(' ');
+		correctlyAssignedStatesGuess[2].setState("blank");
+		correctlyAssignedStatesGuess[3] = new LetterState(' ');
+		correctlyAssignedStatesGuess[3].setState("blank");
+		correctlyAssignedStatesGuess[4] = new LetterState(' ');
+		correctlyAssignedStatesGuess[4].setState("blank");
+
+		assertFalse(testWordle.submitGuess(guess));
+		assertTrue(assertLetterStateArraysEqual(testWordle.getGuesses()[testWordle.getCurrentGuessNumber()-1], 
+					correctlyAssignedStatesGuess));
+	}
 	
 	@Test
 	void processGuessTestWrongAnswerState() {

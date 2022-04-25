@@ -82,6 +82,9 @@ public class Wordle {
 	//assigns states to guess based on this Wordle's answer
 	//IMPORTANT NOTE: guesses must be sent with all LetterStates having state = States.blank
 	public void processGuess(LetterState[] guess) {
+		//blank guesses should return all States.blank
+		if(processBlankGuess(guess)) { return; }
+		
 		//g is index in guess
 		for(int g = 0; g < guess.length; g++) {
 			
@@ -111,6 +114,20 @@ public class Wordle {
 		}
 
 
+	}
+	
+	private boolean processBlankGuess(LetterState[] guess) {
+		//check if guess is all blank. If it is not, return false
+		for(int g = 0; g < guess.length; g++) {
+			if(guess[g].letter != ' ') {
+				return false;
+			}
+		}
+		//if guess is all blank, set the state of each letter to States.blank and return true
+		for(int g = 0; g < guess.length; g++) {
+			guess[g].state = States.blank;
+		}
+		return true;
 	}
 	
 	//assigns state to given LetterState (at index letterIndex in guess) (for non-duplicate letters)
