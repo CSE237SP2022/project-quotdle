@@ -147,6 +147,11 @@ public class Wordle {
 	
 	//returns true if the LetterState at index letterIndex in guess is in the correct position
 	private boolean isCorrect(LetterState[] guess, int letterIndex) {
+		
+		if (letterIndex >= answer.length()) {
+			return false;
+		}
+		
 		return guess[letterIndex].letter == answer.charAt(letterIndex);
 	}
 

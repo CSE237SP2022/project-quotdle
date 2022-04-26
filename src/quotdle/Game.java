@@ -18,9 +18,8 @@ public class Game {
 	private LetterState[] currentGuess;
 	
 	public Game() {
-		
 		int guesses = 10;
-		String[] answer = {AnswerGenerator.generateNewWordle(), AnswerGenerator.generateNewWordle(), AnswerGenerator.generateNewWordle()};
+		String[] answer = AnswerGenerator.getRandomQuote();
 		currentQuotdleGame = new Quotdle(answer, guesses);
 		currentGuess = new LetterState[currentQuotdleGame.getAnswerLength()];
 	}
@@ -84,7 +83,7 @@ public class Game {
 		
 		if (guess == null) return false;
 		if (guess.length() != 5) return false;
-		if (!AnswerGenerator.getWordleList().contains(guess)) return false;
+//		if (!AnswerGenerator.getWordleList().contains(guess)) return false;
 		
 		
 		LetterState[] guessAsLetterState = new LetterState[guess.length()];
