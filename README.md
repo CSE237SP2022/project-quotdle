@@ -8,6 +8,7 @@ This iteration, the user stories that were completed were focused on quality upd
 * 62
 * 63
 * 66
+* 67
 
 ### Is there anything that you implemented but doesn't currently work?
 No, there is not.
