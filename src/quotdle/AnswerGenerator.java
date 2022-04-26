@@ -8,15 +8,7 @@ import java.util.Collections;
 
 public class AnswerGenerator {
 	
-	private static List<String> possibleQuotes = new ArrayList<String>();
-	
-	public AnswerGenerator() {
-		generateQuotesList();
-	}
-	
-	//fills possibleQuotes with all the quotes that AnswerGenerator could pick
-	private static void generateQuotesList() {
-		Collections.addAll(possibleQuotes, 
+	private static List<String> possibleQuotes = List.of( 
 				 "A Momentary Lapse",
 				 "A Cursory Glance",
 				 "A Dead Ringer",
@@ -215,7 +207,7 @@ public class AnswerGenerator {
 				 "Yo're A Saint",
 				 "Young At Heart",
 				 "Your Number's Up");
-	}
+	
 	
 	public static String[] getRandomQuote() {
 		int randomIndex = new Random().nextInt(possibleQuotes.size());
