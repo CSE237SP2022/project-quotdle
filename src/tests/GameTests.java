@@ -56,49 +56,103 @@ public class GameTests {
 		assertEquals(guessExpected, guessActual);
 	}
   
-  @Test
+	@Test
 	void testInvalidGuesses() {
 		String[] guesses = {"salads", "explosions", "torandos", "", "ex"};
 		Game currGame = new Game();
 		
 		for (String guess: guesses) {
-			assertFalse(currGame.submitGuess(guess));
+			assertFalse(currGame.handleInput(guess));
 		}
 		
 	}
 	
 	@Test
-	void testValidGuesses() {
-		String[] guesses = {"afoul", "owner", "truly", "twice", "zowie"};
-		Game currGame = new Game();
+	void testValidGuesses() {		
+//		does not change to next word after getting one right
+		String[] guesses = {"owner", "truly", "twice", "barge", "bards"};
+		Game currGame = new Game(new String[]{"angry"});
 		
 		for (String guess: guesses) {
-			assertTrue(currGame.submitGuess(guess));
+			assertFalse(currGame.handleInput(guess));
 		}
 		
-//		assumes guess limit is 5
-		String extraGuess = "abuse";
-		assertFalse(currGame.submitGuess(extraGuess));	
+		assertTrue(currGame.handleInput("afoul"));
+		
 	}
+	
+	@Test
+	void testTooManyGuesses() {
+		String[] guesses = {"afoul", "owner", "truly", "twice", "zowie", "zowie", "barge", "bards", "bigly", "abaft"};
+		String[] answer = {"owner", "truly", "afoul"};
+		Game currGame = new Game(answer);
+		
+		for (String input : guesses) {
+			currGame.handleInput(input);
+		}
+		
+		String extraGuess = "abuse";
+		assertFalse(currGame.handleInput(extraGuess));	
+	}
+	
+	@Test
+	void testChangingFocusRight() {
+		String[] inputs = {".", ".", ".", ".", "."};
+		String[] answer = {"owner", "truly", "afoul"};
+		Game currGame = new Game(answer);
+		
+		for (String input : inputs) {
+			currGame.handleInput(input);
+		}
+		
+		assertTrue(currGame.currentQuotdleGame.getFocusIndex() == 2);
+	}
+	
+	@Test
+	void testChangingFocusLeft() {
+		String[] inputs = {",", ",", ",", ",", ","};
+		String[] answer = {"owner", "truly", "afoul"};
+		Game currGame = new Game(answer);
+		
+		for (String input : inputs) {
+			currGame.handleInput(input);
+		}
+		
+		assertTrue(currGame.currentQuotdleGame.getFocusIndex() == 0);
+	}
+	
+	@Test
+	void testChangingLeftAndRight() {
+		String[] inputs = {".", ".", "truly", ",", "salad"};
+		String[] answer = {"owner", "truly", "afoul"};
+		Game currGame = new Game(answer);
+		
+		for (String input : inputs) {
+			currGame.handleInput(input);
+		}
+		
+		assertTrue(currGame.currentQuotdleGame.getFocusIndex() == 1);
+	}
+	
 	
 	@Test
 	void stringifyWordleTest() {
-		Game wordle = new Game("after");
-		String[] guessBlank = wordle.stringifyWordle();
-		String[] expected = new String[6];
+		Game quotdle = new Game(new String[]{"after"});
+		String[] guessBlank = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 0, true);
+		String[] expected = new String[10];
 		for (int i = 0; i < expected.length; i++) {
 			expected[i] = "░ ░ ░ ░ ░";
 		}
 
 		assertArrayEquals(expected, guessBlank);
 		
-		wordle.submitGuess("imply");
-		String[] guessVeryWrong = wordle.stringifyWordle();
+		quotdle.handleInput("imply");
+		String[] guessVeryWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 1, true);
 		expected[0] = "i m p l y";
 		assertArrayEquals(expected, guessVeryWrong);
 		
-		wordle.submitGuess("angry");
-		String[] guessWrong = wordle.stringifyWordle();
+		quotdle.handleInput("angry");
+		String[] guessWrong = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 2, true);
 		expected[1] = ANSI_GREEN_BACKGROUND + "a"  + ANSI_RESET
 				+ " " + "n" 
 				+ " " + "g" 
@@ -106,8 +160,8 @@ public class GameTests {
 				+ " " + "y" ;
 		assertArrayEquals(expected, guessWrong);
 		
-		wordle.submitGuess("after");
-		String[] guessRight = wordle.stringifyWordle();
+		quotdle.handleInput("after");
+		String[] guessRight = Game.stringifyWordle(quotdle.currentQuotdleGame.getWordleGuesses(0), 3, true);
 		expected[2] = ANSI_GREEN_BACKGROUND + "a" + ANSI_RESET 
 				+ " " + ANSI_GREEN_BACKGROUND + "f" + ANSI_RESET 
 				+ " " + ANSI_GREEN_BACKGROUND + "t" + ANSI_RESET 
@@ -118,7 +172,7 @@ public class GameTests {
 	
 	@Test
 	void colorKeyboardLetterTest() {
-		Game wordle = new Game("after");
+		Game wordle = new Game(new String[]{"after"});
 		char[] inputs = { 'a', 'b', 'c', 'x', 'y', 'z', ' ' , '\n' };
 		
 		String[] expected = { "a", "b", "c", "x", "y", "z", " ", "\n" };
@@ -128,7 +182,7 @@ public class GameTests {
 		}
 		assertArrayEquals(expected, actual);
 		
-		wordle.submitGuess("agree");
+		wordle.handleInput("agree");
 		expected[0] = ANSI_GREEN_BACKGROUND + "a" + ANSI_RESET ;
 		
 		for (int i = 0; i < expected.length; i++) {

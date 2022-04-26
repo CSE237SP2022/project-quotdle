@@ -2,17 +2,13 @@ package quotdle;
 
 import java.util.Set;
 
+import quotdle.GameStatus.gameStatus;
 import quotdle.LetterState.States;
 
 import java.util.HashSet;
 
 public class Wordle {
 	
-	public enum gameStatus {
-		won,
-		ranOutOfGuesses,
-		ongoing
-	}
 	
 	private int numberOfGuesses;
 	private String answer;
@@ -29,12 +25,13 @@ public class Wordle {
 		this.status = gameStatus.ongoing;
 		this.currentGuessNumber = 0;
 		this.Guesses = new LetterState[numberOfGuesses][answer.length()];
+		for(int i = 0; i < this.Guesses.length; ++i) {
+			for(int j = 0; j < this.Guesses[i].length; ++j) {
+				this.Guesses[i][j] = new LetterState('_');
+			}
+		}
 		this.keyboard = setUpKeyboard();
 	}
-	
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//	}
 	
 	public String getAnswer() {
 		return this.answer;
@@ -61,7 +58,8 @@ public class Wordle {
 	}
 	
 	public boolean submitGuess(LetterState[] guess) {
-		
+//		System.out.print("Guess submitted for wordle with answer: " + this.answer + " ");
+		this.printLSArray(guess);
 		if (status == gameStatus.ranOutOfGuesses) {
 			return gameDone;
 		}
@@ -69,13 +67,23 @@ public class Wordle {
 		this.processGuess(guess);
 		this.Guesses[currentGuessNumber] = guess;
 		this.currentGuessNumber++;
-		
 		return gameDone;
 	}
+	
+	private void printLSArray(LetterState[] ls) {
+		String toPrint = "[";
+		for(int k = 0; k < ls.length; ++k) {
+			toPrint = toPrint + ls[k].toString() + ", ";
+		}
+		System.out.println(toPrint.substring(0, toPrint.length() - 2) + "]");
+	}
+
 
 	//assigns states to guess based on this Wordle's answer
 	//IMPORTANT NOTE: guesses must be sent with all LetterStates having state = States.blank
 	public void processGuess(LetterState[] guess) {
+		//blank guesses should return all States.blank
+		if(processBlankGuess(guess)) { return; }
 		
 		//g is index in guess
 		for(int g = 0; g < guess.length; g++) {
@@ -106,6 +114,20 @@ public class Wordle {
 		}
 
 
+	}
+	
+	private boolean processBlankGuess(LetterState[] guess) {
+		//check if guess is all blank. If it is not, return false
+		for(int g = 0; g < guess.length; g++) {
+			if(guess[g].letter != ' ') {
+				return false;
+			}
+		}
+		//if guess is all blank, set the state of each letter to States.blank and return true
+		for(int g = 0; g < guess.length; g++) {
+			guess[g].state = States.blank;
+		}
+		return true;
 	}
 	
 	//assigns state to given LetterState (at index letterIndex in guess) (for non-duplicate letters)
