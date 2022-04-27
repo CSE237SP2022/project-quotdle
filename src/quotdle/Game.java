@@ -81,8 +81,11 @@ public class Game {
 	
 	private boolean submitGuess(String guess) {
 		
+		int focus = currentQuotdleGame.getFocusIndex();
+		int expectedLength = currentQuotdleGame.getWordleGuesses(focus)[0].length;
+		
 		if (guess == null) return false;
-		if (guess.length() != 5) return false;
+		if (guess.length() != expectedLength) return false;
 //		if (!AnswerGenerator.getWordleList().contains(guess)) return false;
 		
 		
@@ -119,15 +122,12 @@ public class Game {
 	
 	
 	public void printQuotdle() {
-		LetterState[][] temp = currentQuotdleGame.Guesses;
-		for (int i = 0; i < temp.length; i++) {
-			LetterState[] line = temp[i];
-			if (i < currentQuotdleGame.getCurrentGuessNumber()) {
-				System.out.println(stringifyGuess(line));
-			} else {
-				System.out.println("░ ░ ░ ░ ░   ░ ░ ░ ░ ░   ░ ░ ░ ░ ░");
-			}
+		
+		String[] out = stringifyQuotdle();
+		for (int i = 0; i < out.length; i++) {
+			System.out.println(out[i]);
 		}
+
 	}
 	
 	public String[] stringifyQuotdle() {
@@ -145,18 +145,25 @@ public class Game {
 	public static String[] stringifyWordle(LetterState[][] guesses, int guessNumber, boolean focus) {
 		int length = guesses.length;
 		String[] wordleOutput = new String[length];
-		
+				
 		for (int i = 0; i < length; i++) {
 			if (i < guessNumber) {
 				wordleOutput[i] = stringifyGuess(guesses[i]);
-//			} else if (i == currentWordleGame.currentGuessNumber) {
-//				wordleOutput[i] = stringifyGuess(currentGuess);
 			} else {
-				wordleOutput[i] = stringifyGuess(generateBlank(guesses[i].length, focus));
+				char c = getBlankCharacter(guessNumber, i, focus);
+				wordleOutput[i] = stringifyGuess(generateBlank(guesses[i].length, c));
 			}
 		}
 		
 		return wordleOutput;
+	}
+	
+	public static char getBlankCharacter(int guessNumber, int i, boolean focus) {
+		if (focus) {
+			return '░';
+		} else {
+			return '_';
+		}
 	}
 	
 	public static String stringifyGuess(LetterState[] guess) {
@@ -181,18 +188,11 @@ public class Game {
 		}
 	}
 	
-	public static LetterState[] generateBlank(int length, boolean focus) {
+	public static LetterState[] generateBlank(int length, char c) {
 		LetterState[] blank = new LetterState[length];
-		char c;
-		if (focus) {
-			c = '░';
-		} else {
-			c = ' ';
-		}
-		
 		
 		for (int i = 0; i < blank.length; i++) {
-			blank[i] = new LetterState('░', States.blank);
+			blank[i] = new LetterState(c, States.blank);				
 		}
 		
 		return blank;

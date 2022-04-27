@@ -107,9 +107,8 @@ public class Quotdle {
 				toReturn = toReturn && hasCompletedGuess;
 			}
 			else {
-				toReturn = toReturn && this.getAndResubmitOldGuess(i);
+				toReturn = this.getAndResubmitOldGuess(i) && toReturn;
 			}
-			LetterState[][] pastGuesses = this.wordles[i].getGuesses();
 		}
 		
 //		not a good fix -- if the user has finished the task on the right, then there's no point pushing them there
