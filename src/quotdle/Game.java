@@ -150,7 +150,7 @@ public class Game {
 			if (i < guessNumber) {
 				wordleOutput[i] = stringifyGuess(guesses[i]);
 			} else {
-				char c = getBlankCharacter(guessNumber, i, focus);
+				char c = getBlankCharacter(focus);
 				wordleOutput[i] = stringifyGuess(generateBlank(guesses[i].length, c));
 			}
 		}
@@ -158,7 +158,7 @@ public class Game {
 		return wordleOutput;
 	}
 	
-	public static char getBlankCharacter(int guessNumber, int i, boolean focus) {
+	public static char getBlankCharacter(boolean focus) {
 		if (focus) {
 			return '░';
 		} else {
